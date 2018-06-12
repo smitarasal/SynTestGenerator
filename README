@@ -1,0 +1,71 @@
+#README#
+--------
+
+# Properties #
+1. Name: config.properties
+   Purpose: hold the properties related to application and user
+   Location: /src/
+   Usage: test.qsi.common.Utilities.getProperties(String key)
+   e.g.: getProperties("userName")
+
+2. Name: attribute.properties
+   Purpose: hold the properties related to IOS element locators 
+   Location: /src/
+   Usage: test.qsi.common.Utilities.getAttributeValue(String key)
+   e.g.: getAttributeValue("userNameTFxpath")
+   
+# Utilities #
+1. Utility Name: getProperties
+   Purpose: returns property values for given key from config.properties
+   Location: test.qsi.common.Utilities
+   Usage: getProperties(String key)
+   e.g.: getProperties("userName")
+   
+2. Utility Name: getAttributeValue
+   Purpose: returns property values for given key from attribute.properties
+   Location: test.qsi.common.Utilities
+   Usage: getAttributeValue(String key)
+   e.g.: getAttributeValue("userNameTFxpath")
+   
+3. Utility Name: waitUntil
+   Purpose: explicitly wait until given Expected condition
+   Location: test.qsi.common.Utilities
+   Usage: waitUntil(ExpectedCondition<WebElement> expectedCondition,AppiumDriver<IOSElement> driver,int time)
+   e.g.: waitUntil(ExpectedConditions.visibilityOfElementLocated(By.name(getAttributeValue("lftMenuInspectionTabName"))), driver, 60)
+   
+4. Utility Name: click
+   Purpose: click on the given IOS element
+   Location: test.qsi.common.Utilities
+   Usage: click(AppiumDriver<IOSElement> driver, By by)
+   e.g.: click(driver, By.name(getAttributeValue("logoutName")))
+   
+5. Utility Name: sendKeys
+   Purpose: click on the given IOS element
+   Location: test.qsi.common.Utilities
+   Usage: sendKeys(AppiumDriver<IOSElement> driver, By by, String key)
+   e.g.: sendKeys(driver, By.xpath(getAttributeValue("usernameTFxpath")), username)
+ 
+
+# Assert Library #
+1. AssertLib Name: assertByName
+   Purpose: asserts IOS element name with a given string and log the assert error if any and fails the test
+   Location: test.qsi.common.AssertLib
+   Usage: assertByName(AppiumDriver<IOSElement> driver, String actual, String expected)
+   e.g.: assertByName(driver, getAttributeValue("landingPageCopyrtName"), getAttributeValue("landingPageCopyrt"))
+      
+
+# QSI Functions #
+1. function Name: logInQSI
+   Purpose: login with given userName and password
+   Location: test.qsi.functions.Login
+   Usage: logInQSI(AppiumDriver<IOSElement> driver, String userName, String password)
+   e.g.: logInQSI(driver, getProperties("userName"), getProperties("password"))  
+   
+2. function Name: logOutQSI
+   Purpose: login with given userName and password
+   Location: test.qsi.functions.Logout
+   Usage: logOutQSI(AppiumDriver<IOSElement> driver) 
+   e.g.: logOutQSI(driver) 
+   
+3.  
+   

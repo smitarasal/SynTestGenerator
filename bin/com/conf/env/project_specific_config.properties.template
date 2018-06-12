@@ -1,0 +1,38 @@
+#Platform Properties
+#drivertype SHOULD BE IOS/Web/Android
+drivertype = Web
+
+#Web application properties
+# PROVIDE WEB APPLICATION URL
+weburl = http://test-platform.quantumspatial.com/
+
+#IOS application properties
+app = src/app/LKEiPadApp.app
+appium_port=4725
+appium-version = 1.0
+platformName = iOS
+platformVersion = 9.1
+deviceName = iPad Air
+
+#Test suite configuration (Invoke properties)
+test_suite_name=KWDFSuite
+test_name=common
+class_name_1=com.testsuiterunner.web.demo.RegressionXls
+custom_reporter_class=com.reporter.web.demo.CustomReporter
+
+#Action properties
+action_package=com.actions.web.demo.pages
+action_folder_path=src/com/actions/web/demo/pages
+
+#Test repository properties - set testfile according to test repository
+testfile = testrepo/testsuites/web/demo/tests_web.xls
+parameterfilepath=testrepo/testsuites/web/demo/parameters/
+
+##SendEmail properties
+to = madhu.kumari@synerzip.com
+from = FQUser11@gmail.com
+username = FQUser11@gmail.com
+password = password121
+project = DemoProject
+testsuit = KWDFSuite
+text=This is an auto-generated email.Please do not reply.

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!-- This file is redundant for us -->
+<!-- <suite name="OutterSuite" thread-count="2">
+  <test name="common">
+  	<classes>
+  		 <class name="test.demo.tests.Regression"></class>
+         <class name="test.demo.tests.RegressionXls"></class>
+  	</classes>
+  </test> 
+</suite> -->

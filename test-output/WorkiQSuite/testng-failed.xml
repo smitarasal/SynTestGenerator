@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [WorkiQSuite]">
+  <listeners>
+    <listener class-name="com.reporter.CustomReporter"/>
+  </listeners>
+  <test name="common(failed)">
+    <classes>
+      <class name="com.testsuiterunner.web.workiq.RegressionXls">
+        <methods>
+          <include name="setupBeforeSuite"/>
+          <include name="ExcelTest"/>
+          <include name="UITest"/>
+        </methods>
+      </class> <!-- com.testsuiterunner.web.workiq.RegressionXls -->
+    </classes>
+  </test> <!-- common(failed) -->
+</suite> <!-- Failed suite [WorkiQSuite] -->
