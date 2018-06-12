@@ -9,6 +9,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,6 +36,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import com.main.utilitylib.Utilities;
+
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -41,18 +45,18 @@ import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+import java.awt.Font;
+
+
 public class ActioTestGenerator extends JFrame {
 	static JFrame mainFrame;
 
 	static ImageIcon icon = new ImageIcon("syn-icon.png");
-	static File testCaseFile = new File(
-			"E:\\E- Drive\\Performance\\Automation\\WorkiQ_working77_v11\\testrepo\\testsuites\\web\\workiq\\tests_web.XLS");
-	static File parameterFile = new File(
-			"E:\\E- Drive\\Performance\\Automation\\WorkiQ_working77_v117\\testrepo\\testsuites\\web\\workiq\\ParameterFormat.xls");
-	static File actionLibraryFile = new File(
-			"E:\\E- Drive\\Performance\\Automation\\WorkiQ_working77_v11\\testrepo\\testsuites\\web\\workiq\\ActionLibrary.xls");
+	Utilities utilities = new Utilities();
 	Map<String, String> mapValues = new HashMap<String, String>();
-
+	static File testCaseFile = null;
+	static File parameterFile = null;
+	static File actionLibraryFile =null;
 	// All four panels in the UI
 	static JPanel panelMenu;
 	static JPanel panelCreateTests;
@@ -125,6 +129,7 @@ public class ActioTestGenerator extends JFrame {
 		initialize();
 	}
 
+
 	public void initialize() {
 
 		mainFrame = new JFrame();
@@ -147,6 +152,7 @@ public class ActioTestGenerator extends JFrame {
 		lblTestData = new JLabel("Enter Test Data :");
 		lblPlatform = new JLabel("Enter Platform :");
 		lblSave = new JLabel("Saved The TestCase Successfully :");
+		lblSave.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblSave.setForeground(Color.blue);
 
 		comboActions = new JComboBox();
@@ -160,7 +166,7 @@ public class ActioTestGenerator extends JFrame {
 		String[] testSuites = new String[] { "", "Smoke Suite", "Sanity Suite", "Regression" };
 		comboTestSuite = new JComboBox(testSuites);
 
-		String[] platforms = new String[] { "", "Web", "IOS", "Android" };
+		String[] platforms = new String[] { "", "Web", "IOS", "Android","IOSBrowser","API","Android Browser"  };
 		comboPlatform = new JComboBox(platforms);
 
 		textTestCaseID = new JTextField();
@@ -176,6 +182,16 @@ public class ActioTestGenerator extends JFrame {
 		comboActions.addItem("");
 
 		columnNames = new String[] { "Parameter", "	Parameter value" };
+		Utilities utilities = new Utilities();
+		try {
+			actionLibraryFile = utilities.getExcelFile("actionLibraryFile");
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		populateActions(comboActions, actionLibraryFile, 0);
 
 		model = new DefaultTableModel(data, columnNames) {
@@ -191,12 +207,19 @@ public class ActioTestGenerator extends JFrame {
 
 		parameterTable = new JTable();
 		parameterTable.setRowHeight(20);
+		int nRow = model.getRowCount(), nCol = model.getColumnCount();
+		for(int j=0;j<nCol;j+=2){
+		 model.fireTableCellUpdated(nRow, j+1);
+		}
 		parameterTable.setModel(model);
 		scrollPaneParameters = new JScrollPane(parameterTable);
 
 		masterModel.setColumnIdentifiers(masterColumns);
 		masterTable.setModel(masterModel);
-
+		
+		
+		
+		
 		// ***************************************************************************************
 		mainFrame.setTitle("Actio - Test Generator ");
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -240,6 +263,10 @@ public class ActioTestGenerator extends JFrame {
 		});
 
 		// ***************************************************************************************
+		
+		
+		
+		
 		panelMenu.setLayout(null);
 		panelCreateTests.setLayout(null);
 		panelRunTests.setLayout(null);
@@ -281,53 +308,55 @@ public class ActioTestGenerator extends JFrame {
 
 		lblisEnabled.setBounds(9, 30, 86, 33);
 		lblActions.setBounds(9, 242, 86, 33);
-		lblModule.setBounds(565, 88, 63, 33);
-		lblTestCaseID.setBounds(253, 88, 102, 33);
-		lblTestCaseName.setBounds(843, 39, 114, 14);
-		lblTestData.setBounds(859, 88, 86, 33);
-		lblTestDescription.setBounds(265, 242, 143, 33);
-		lblTestSuite.setBounds(556, 30, 72, 33);
-		lblPriority.setBounds(265, 30, 86, 33);
+		lblModule.setBounds(731, 88, 63, 33);
+		lblTestCaseID.setBounds(347, 88, 143, 33);
+		lblTestCaseName.setBounds(1047, 39, 164, 14);
+		lblTestData.setBounds(1047, 88, 148, 33);
+		lblTestDescription.setBounds(326, 242, 143, 33);
+		lblTestSuite.setBounds(731, 30, 72, 33);
+		lblPriority.setBounds(347, 30, 86, 33);
 		lblPlatform.setBounds(9, 88, 102, 33);
 		lblTableTitle.setBounds(29, 312, 361, 25);
-		lblSave.setBounds(1174, 913, 375, 100);
+		lblSave.setBounds(1099, 730, 286, 87);
 
-		comboIsEnabled.setBounds(100, 30, 148, 33);
-		comboActions.setBounds(100, 242, 143, 33);
-		textModule.setBounds(648, 88, 171, 33);
-		textTestCaseID.setBounds(361, 88, 165, 33);
-		textTestCaseName.setBounds(984, 30, 200, 33);
-		textTestData.setBounds(981, 88, 211, 33);
-		textDescription.setBounds(393, 242, 211, 33);
+		comboIsEnabled.setBounds(123, 30, 148, 33);
+		comboActions.setBounds(123, 242, 148, 33);
+		textModule.setBounds(842, 88, 171, 33);
+		textTestCaseID.setBounds(500, 88, 143, 33);
+		textTestCaseName.setBounds(1221, 30, 263, 33);
+		textTestData.setBounds(1221, 88, 263, 33);
+		textDescription.setBounds(473, 242, 439, 33);
 
 		btnCreateTests.setBounds(565, 269, 116, 35);
 		btnViewTests.setBounds(565, 339, 116, 35);
 		btnRunTests.setBounds(565, 410, 116, 35);
-		btnAddStep.setBounds(333, 307, 116, 35);
-		btnDeleteStep.setBounds(459, 307, 116, 35);
+		btnAddStep.setBounds(1097, 612, 116, 35);
+		btnDeleteStep.setBounds(1263, 612, 116, 35);
 
-		comboTestSuite.setBounds(648, 30, 171, 33);
+		comboTestSuite.setBounds(842, 30, 171, 33);
 
-		comboPriority.setBounds(361, 30, 165, 33);
-		comboPlatform.setBounds(100, 88, 143, 33);
+		comboPriority.setBounds(500, 30, 143, 33);
+		comboPlatform.setBounds(123, 88, 148, 33);
 
-		btnCreateSaveTestButton.setBounds(1041, 611, 200, 33);
-		btnBackToMain.setBounds(808, 615, 205, 25);
-		scrollPaneParameters.setBounds(793, 291, 349, 275);
-		scrollPaneMaster.setBounds(29, 348, 705, 315);
+		btnCreateSaveTestButton.setBounds(756, 831, 200, 37);
+		btnBackToMain.setBounds(398, 826, 205, 42);
+		scrollPaneParameters.setBounds(1099, 256, 349, 324);
+		scrollPaneMaster.setBounds(29, 348, 938, 315);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 207, 1340, 2);
+		separator.setBounds(0, 207, 1850, 2);
 		panelCreateTests.add(separator);
 
 		separatorVertical = new JSeparator();
 		separatorVertical.setOrientation(SwingConstants.VERTICAL);
-		separatorVertical.setBounds(764, 207, 2, 682);
+		separatorVertical.setBounds(1011, 214, 2, 575);
 		panelCreateTests.add(separatorVertical);
 
 		btnCreateSaveTestButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					Utilities utilities = new Utilities();
+					testCaseFile = utilities.getExcelFile("testfile");
 					Workbook workbook = Workbook.getWorkbook(testCaseFile);
 					WritableWorkbook copy = Workbook.createWorkbook(testCaseFile, workbook);
 					WritableSheet sheet1 = copy.getSheet(0);
@@ -346,7 +375,7 @@ public class ActioTestGenerator extends JFrame {
 					copy.write();
 					copy.close();
 					workbook.close();
-
+					parameterFile = utilities.getExcelFile("parameterFile");
 					Workbook workbook2 = Workbook.getWorkbook(parameterFile);
 					WritableWorkbook copy2 = Workbook.createWorkbook(parameterFile, workbook2);
 					WritableSheet sheet2 = copy2.getSheet(0);
@@ -355,7 +384,7 @@ public class ActioTestGenerator extends JFrame {
 					Label cell;
 					for (String key : keys) {
 						int size1 = sheet2.getRows();
-						System.out.println("key = " + key + "value = " + mapValues.get(key));
+					
 						cell = new Label(0, size1, textTestCaseID.getText());
 						sheet2.addCell(cell);
 						cell = new Label(1, size1, key);
@@ -368,7 +397,7 @@ public class ActioTestGenerator extends JFrame {
 					copy2.close();
 					workbook2.close();
 					mapValues.clear();
-					System.out.println("the values :" + mapValues);
+					
 				} catch (Exception e1) {
 
 					e1.printStackTrace();
@@ -416,11 +445,9 @@ public class ActioTestGenerator extends JFrame {
 						model2.removeRow(i);
 					}
 				}
-				// boolean b = false;
-				// comboActions.setEnabled(false);
-				// textDescription.setEditable(b);
-				// parameterTable.setEnabled(b);
-				// masterTable.setEnabled(b);
+				
+				lblSave.setVisible(true);
+				
 
 			}
 		});
@@ -504,8 +531,10 @@ public class ActioTestGenerator extends JFrame {
 						// It will make the cells of Column-1 not Editable
 						return true;
 					}
+					
 				};
 				parameterTable.setModel(model);
+				
 
 			}
 		});
@@ -514,7 +543,37 @@ public class ActioTestGenerator extends JFrame {
 
 		btnAddStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				String caseID	=	textTestCaseID.getText();
+				boolean flag	=	false;
+				if(caseID.equalsIgnoreCase(""))
+				{
+					JOptionPane.showMessageDialog(mainFrame.getComponent(0), "Please Enter TestCaseID!!!");
+				}
+				else {
+					try {
+						testCaseFile = utilities.getExcelFile("testfile");
+						Workbook workbook = null;
+						workbook = Workbook.getWorkbook(testCaseFile);
+						Sheet sheet = workbook.getSheet(0);
+						for (int i = 1; i < sheet.getRows(); i++) {
+							Cell cell = sheet.getCell(4, i);
+							if (cell.getContents().equalsIgnoreCase(caseID)&&(!cell.getContents().equalsIgnoreCase(""))) {
+								flag	=	true;
+								
+								break;
+							}
+						}
+						
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					
+				if(flag	==true)
+				{
+					JOptionPane.showMessageDialog(mainFrame.getComponent(0), "TestCaseID Already Present!!!");
+					textTestCaseID.setText("");
+				}else {
+					
 				if (masterTable.getRowCount() == 0) {
 					row[0] = comboIsEnabled.getSelectedItem();
 					row[1] = comboTestSuite.getSelectedItem();
@@ -536,23 +595,31 @@ public class ActioTestGenerator extends JFrame {
 					row[4] = "";
 					row[5] = "";
 					row[6] = "";
-					row[7] = "";
+					row[7] = textDescription.getText();
 					row[8] = comboActions.getSelectedItem();
 					row[9] = "";
 					masterModel.addRow(row);
 
 				}
+				
+				
+				
+				
+					
+				
 
 				int nRow = model.getRowCount(), nCol = model.getColumnCount();
-
+				
 				for (int i = 0; i < nRow; i++) {
 					for (int j = 0; j < nCol; j += 2) {
+						
+						
 						mapValues.put(model.getValueAt(i, j).toString(), model.getValueAt(i, j + 1).toString());
-
+						
 					}
 
 				}
-
+				
 				comboIsEnabled.setEnabled(false);
 				comboPriority.setEnabled(false);
 				comboPlatform.setEnabled(false);
@@ -562,7 +629,8 @@ public class ActioTestGenerator extends JFrame {
 				textTestCaseName.setEditable(b);
 				textTestData.setEditable(b);
 				textTestSuite.setEditable(b);
-
+					}
+				}
 			}
 		});
 
@@ -591,9 +659,10 @@ public class ActioTestGenerator extends JFrame {
 
 	static void populateTable(int row) {
 		try {
+			Utilities utilities = new Utilities();
 			// Get parameters from ForTestGeneratorFile
-			// File testGenFile = new
-			// File("E:\\WorkiQ_2_HRMS\\WorkiQ_2_HRMS\\WorkiQ\\testrepo\\docs\\dictionaries\\ForTestGenerator.xls");
+			
+			actionLibraryFile = utilities.getExcelFile("actionLibraryFile");
 			Workbook workbook = null;
 			ArrayList<String> temp = new ArrayList<String>();
 			workbook = Workbook.getWorkbook(actionLibraryFile);
@@ -604,9 +673,10 @@ public class ActioTestGenerator extends JFrame {
 					temp.add(cell.getContents());
 			}
 
-			// File testFile = new
-			// File("E:\\WorkiQ_2_HRMS\\WorkiQ_2_HRMS\\WorkiQ\\testrepo\\docs\\dictionaries\\Test.xls");
+			
+			parameterFile = utilities.getExcelFile("parameterFile");
 			Workbook workbook2 = null;
+			
 			workbook2 = Workbook.getWorkbook(parameterFile);
 			Sheet sheet2 = workbook2.getSheet(0);
 			ArrayList<String> paraValues = new ArrayList<String>();
@@ -615,35 +685,28 @@ public class ActioTestGenerator extends JFrame {
 			Cell cell1 = null, cell2 = null;
 
 			while (itr.hasNext()) {
+				
 				str = itr.next();
-				for (int row3 = 1; row3 < sheet2.getRows(); row3++) {
-
-					cell1 = sheet2.getCell(1, row3);
-					cell2 = sheet2.getCell(2, row3);
-					if (!cell1.getContents().isEmpty()) {
-						if (cell1.getContents().equalsIgnoreCase(str)) {
-							paraValues.add((String) cell2.getContents());
-						}
-					} else {
+				
 						paraValues.add(" ");
-						break;
-					}
-				} // end of for
+						
 			} // end of while
 
 			String[] parametersArray = temp.toArray(new String[temp.size()]);
 			String[] parametersValues = paraValues.toArray(new String[paraValues.size()]);
 			dataValues = new String[parametersArray.length][2];
 
-			for (int r = 0; r < parametersArray.length; r++)
+			for (int r = 0; r < parametersArray.length; r++) {
 				dataValues[r][0] = parametersArray[r];
+			}
 
-			for (int r = 0; r < parametersValues.length; r++)
+			for (int r = 0; r < parametersValues.length; r++) {
 				dataValues[r][1] = parametersValues[r];
-
+				}
+				
 			data = dataValues;
 		} catch (Exception e) {
-			System.out.println("In populateTable : Exception " + e.getMessage());
+			
 		}
 
 	}
@@ -654,9 +717,10 @@ public class ActioTestGenerator extends JFrame {
 			mainFrame.setVisible(true);
 
 		} catch (Exception e) {
-			System.out.println("Exception" + e.getMessage());
+			
 
 		}
 	}
 
 }
+
