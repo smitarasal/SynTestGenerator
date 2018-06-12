@@ -45,6 +45,7 @@ public class ActioTestGenerator extends JFrame {
 	static JFrame mainFrame;
 
 	static ImageIcon icon = new ImageIcon("syn-icon.png");
+
 	static File testCaseFile = new File(
 			"E:\\E- Drive\\Performance\\Automation\\WorkiQ_working77_v11\\testrepo\\testsuites\\web\\workiq\\tests_web.XLS");
 	static File parameterFile = new File(
