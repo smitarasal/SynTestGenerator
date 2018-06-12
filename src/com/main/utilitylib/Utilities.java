@@ -3,6 +3,7 @@ package com.main.utilitylib;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,13 +69,17 @@ public class Utilities {
 		return testcount;
 	}
 
+
 	// Get main config
 	public String getConfigFile(String key) throws IOException {
-		input = new FileInputStream("src/com/conf/env/config.properties");
+		key = "project_conf_file_path";
+		input = new FileInputStream("./src/com/conf/env/config.properties");
 		prop.load(input);
-
+		//System.out.println(prop.getProperty(key));
 		return prop.getProperty(key).trim();
+	
 	}
+
 
 	// Get project specific config Properties
 	public String getProperties(String key) throws IOException {
@@ -103,6 +108,19 @@ public class Utilities {
 
 		return prop.getProperty(key);
 	}
+	
+	
+
+	///new shradha
+	
+		public File getExcelFile(String key) throws FileNotFoundException, IOException{
+			
+			input = new FileInputStream(getConfigFile("/com/conf/web/workiq/config.properties"));
+			prop.load(input);
+			 File excelFile = new File(prop.getProperty(key));
+			 return excelFile;
+		}
+
 
 	// Explicit Wait
 	public void waitUntil(ExpectedCondition<WebElement> expectedCondition, RemoteWebDriver driver, int time) {
