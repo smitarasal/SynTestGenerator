@@ -133,8 +133,6 @@ public class ActioTestGenerator extends JFrame {
 	public void initialize() {
 
 		mainFrame = new JFrame();
-		// mainFrame.setSize(1000, 1000);
-
 		btnCreateTests = new JButton("Create Tests");
 		btnViewTests = new JButton("View Tests");
 		btnRunTests = new JButton("Run Tests");
