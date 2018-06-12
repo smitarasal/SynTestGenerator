@@ -446,7 +446,6 @@ public class ActioTestGenerator extends JFrame {
 				
 				lblSave.setVisible(true);
 				
-
 			}
 		});
 
