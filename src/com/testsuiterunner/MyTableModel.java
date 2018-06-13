@@ -136,14 +136,14 @@ class MyTableModel extends AbstractTableModel {
 		}
 		if (tableData[0][0] == null) {
 			tableData[0][0] = "There ";
-			tableData[0][1] = "is ";
-			tableData[0][2] = "no ";
-			tableData[0][3] = "Data ";
-			tableData[0][4] = "to ";
-			tableData[0][5] = "display ";
-			tableData[0][6] = " !!!";
+			tableData[0][1] = "There ";
+			tableData[0][2] = "is ";
+			tableData[0][3] = "no ";
+			tableData[0][4] = "Data ";
+			tableData[0][5] = "to ";
+			tableData[0][6] = "display ";
 			tableData[0][7] = "Sorry ";
-			tableData[0][8] = "!! ";
+			tableData[0][8] = "!!";
 			tableData[0][9] = "!! ";
 			SelectionDetails.isdatapresent = false;
 		}

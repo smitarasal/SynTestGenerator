@@ -368,10 +368,10 @@ public class SelectionDetails {
 		lblInfo.validate();
 		lblInfo.repaint();
 		lblInfo.setText("List of selected Test Cases : ");
-		System.out.println("testcount:_____________________________________");
-		System.out.println("TestCasesIDLst:" + Global.TestCasesIDLst.size());
-		System.out.println("testcount:" + testcount);
-		System.out.println("testcount:_____________________________________");
+		// System.out.println("testcount:_____________________________________");
+		// System.out.println("TestCasesIDLst:" + Global.TestCasesIDLst.size());
+		// System.out.println("testcount:" + testcount);
+		// System.out.println("testcount:_____________________________________");
 		lblInfo.setText("List of selected Test Cases : " + Global.TestCasesIDLst.size());
 	}
 
