@@ -164,7 +164,7 @@ public class ActioTestGenerator extends JFrame {
 		String[] testSuites = new String[] { "", "Smoke Suite", "Sanity Suite", "Regression" };
 		comboTestSuite = new JComboBox(testSuites);
 
-		String[] platforms = new String[] { "", "Web", "IOS", "Android" };
+		String[] platforms = new String[] { "", "Web", "IOS", "Android","IOSBrowser","API","Android Browser" };
 		comboPlatform = new JComboBox(platforms);
 
 		textTestCaseID = new JTextField();
@@ -329,8 +329,8 @@ public class ActioTestGenerator extends JFrame {
 		comboPriority.setBounds(500, 30, 143, 33);
 		comboPlatform.setBounds(123, 88, 148, 33);
 
-		btnCreateSaveTestButton.setBounds(756, 831, 200, 37);
-		btnBackToMain.setBounds(398, 826, 205, 42);
+		btnCreateSaveTestButton.setBounds(579, 699, 200, 37);
+		btnBackToMain.setBounds(206, 696, 205, 42);
 		scrollPaneParameters.setBounds(1099, 256, 349, 324);
 		scrollPaneMaster.setBounds(29, 348, 938, 315);
 
