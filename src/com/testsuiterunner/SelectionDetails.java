@@ -225,12 +225,19 @@ public class SelectionDetails {
 					System.out.println("--------------------------------------------------------------");
 					System.out.println("data::" + mydata);
 					System.out.println("--------------------------------------------------------------");
+					try {
+						Runtime.getRuntime().exec(new String[] { "cmd", "/K", "Start" });
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					JOptionPane.showMessageDialog(panelViewTests,
 							"<html> <b> Execution Started Successfully, Click 'Ok' button to return Main Screen </b> </html>");
 					panelViewTests.setVisible(false);
 					panelMenu.setVisible(true);
 					dataReset(comboBoxSuite, comboboxmodule, comboboxpriority, comboBoxPlatform, lblInfo, scrollPane1,
 							colModel);
+
 				}
 
 			}
