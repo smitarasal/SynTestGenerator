@@ -35,7 +35,7 @@ public class SelectionDetails {
 	static String[] excelHeaders = null;
 	static Boolean isdatapresent = true;
 	static MyTableModel mytable = null;
-
+	public static JLabel lblInfo = null;
 	static int testcount = 0;
 	static JTable table;
 
@@ -122,7 +122,7 @@ public class SelectionDetails {
 		comboBoxPlatform.setSelectedIndex(0);
 		panelViewTests.add(comboBoxPlatform);
 
-		JLabel lblInfo = new JLabel();
+		lblInfo = new JLabel();
 		testCountlable(lblInfo);
 		lblInfo.setBounds(30, 60, 500, 33);
 		lblInfo.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 15));
@@ -149,7 +149,6 @@ public class SelectionDetails {
 		btnSearchSelected.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				new SelectionDetails(comboBoxSuite.getSelectedItem().toString(),
 						comboboxmodule.getSelectedItem().toString(), comboboxpriority.getSelectedItem().toString(),
 						comboBoxPlatform.getSelectedItem().toString());
@@ -223,7 +222,9 @@ public class SelectionDetails {
 				} else {
 					String mydata = Global.TestCasesIDLst.toString().replace(",", "").replace("[", "").replace("]", "");
 					System.out.println("--------------------------------------------------------------");
-					System.out.println("data::" + mydata);
+					System.out.println("data:" + Global.TestCasesIDLst.toString());
+					System.out.println("_______________________________________________________________");
+					System.out.println("data for CMD:" + mydata);
 					System.out.println("--------------------------------------------------------------");
 					try {
 						Runtime.getRuntime().exec(new String[] { "cmd", "/K", "Start" });
