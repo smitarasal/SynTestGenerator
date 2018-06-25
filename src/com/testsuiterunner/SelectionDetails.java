@@ -195,7 +195,7 @@ public class SelectionDetails {
 			}
 		});
 		btnReset.setBounds(300, 660, 200, 33);
-		// panelViewTests.add(btnReset);
+		panelViewTests.add(btnReset);
 
 		JButton btnBackToMain = new JButton("Back To Main Screen");
 		btnBackToMain.addActionListener(new ActionListener() {
@@ -227,20 +227,17 @@ public class SelectionDetails {
 					System.out.println("data for CMD:" + mydata);
 					System.out.println("--------------------------------------------------------------");
 					try {
-						Runtime.getRuntime().exec(new String[] { "cmd", "/K", "Start" });
+						Runtime.getRuntime()
+								.exec("cmd /c start cmd.exe /K \"E: && cd E:\\actio-synerzip\\actio-synerzip && mvn package exec:java -Dexec.mainClass=\"com.testsuiterunner.Invoke\" -Dexec.args=\""
+										+ mydata + "\" ");
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					JOptionPane.showMessageDialog(panelViewTests,
 							"<html> <b> Execution Started Successfully, Click 'Ok' button to return Main Screen </b> </html>");
 					panelViewTests.setVisible(false);
 					panelMenu.setVisible(true);
-					dataReset(comboBoxSuite, comboboxmodule, comboboxpriority, comboBoxPlatform, lblInfo, scrollPane1,
-							colModel);
-
 				}
-
 			}
 		});
 		btnExecuteButton.setBounds(1100, 660, 230, 33);
@@ -258,7 +255,6 @@ public class SelectionDetails {
 			setExcelPlatform(new ArrayList<String>(Arrays.asList(Test.getExcelplatformSet())));
 			Global.TestCasesIDLst = new ArrayList<String>(Arrays.asList(Test.getExcelTestCasesID()));
 			selections = new SelectionDetails("All", "All", "All", "All");
-
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
