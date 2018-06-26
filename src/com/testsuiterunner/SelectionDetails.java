@@ -3,7 +3,9 @@ package com.testsuiterunner;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -226,13 +228,40 @@ public class SelectionDetails {
 					System.out.println("_______________________________________________________________");
 					System.out.println("data for CMD:" + mydata);
 					System.out.println("--------------------------------------------------------------");
+					/*
+					 * try { Runtime.getRuntime()
+					 * .exec("cmd /c start cmd.exe /K \"E: && cd E:\\actio-synerzip\\actio-synerzip && mvn package exec:java -Dexec.mainClass=\"com.testsuiterunner.Invoke\" -Dexec.args=\""
+					 * + mydata + "\" "); } catch (IOException e1) {
+					 * e1.printStackTrace(); }
+					 */
 					try {
-						Runtime.getRuntime()
-								.exec("cmd /c start cmd.exe /K \"E: && cd E:\\actio-synerzip\\actio-synerzip && mvn package exec:java -Dexec.mainClass=\"com.testsuiterunner.Invoke\" -Dexec.args=\""
-										+ mydata + "\" ");
-					} catch (IOException e1) {
+						String[] command = new String[3];
+						command[0] = "cmd";
+						command[1] = "/c";
+						command[2] = "E: && cd E:\\actio-synerzip\\actio-synerzip && mvn package exec:java -Dexec.mainClass=\"com.testsuiterunner.Invoke\" -Dexec.args=\""
+								+ mydata + "\"";
+
+						Process p = Runtime.getRuntime().exec(command);
+
+						BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+						String line = reader.readLine();
+						while (line != null) {
+							System.out.println(line);
+							line = reader.readLine();
+						}
+						BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+						BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+						String Error;
+						while ((Error = stdError.readLine()) != null) {
+							System.out.println(Error);
+						}
+						while ((Error = stdInput.readLine()) != null) {
+							System.out.println(Error);
+						}
+					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
+
 					JOptionPane.showMessageDialog(panelViewTests,
 							"<html> <b> Execution Started Successfully, Click 'Ok' button to return Main Screen </b> </html>");
 					panelViewTests.setVisible(false);
