@@ -4,7 +4,7 @@ package com.testsuiterunner;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -34,17 +34,9 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
-import org.apache.tools.ant.taskdefs.Length;
-
-import com.itextpdf.text.List;
 import com.main.utilitylib.Utilities;
 
 import jxl.Cell;
@@ -54,8 +46,6 @@ import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
-import java.awt.Font;
-
 public class ActioTestGenerator extends JFrame {
 	static JFrame mainFrame;
 
@@ -64,17 +54,16 @@ public class ActioTestGenerator extends JFrame {
 	Map<String, String> mapValues = new HashMap<String, String>();
 	static File testCaseFile = null;
 	static File parameterFile = null;
-	static File actionLibraryFile =null;
+	static File actionLibraryFile = null;
 	// All four panels in the UI
 	static JPanel panelMenu;
 	static JPanel panelCreateTests;
 	static JPanel panelViewTests;
-	static JPanel panelRunTests;
+	static JPanel panelEditTests;
 
 	// Controls to be displayed on panelMenu
 	static JButton btnCreateTests;
 	static JButton btnViewTests;
-	static JButton btnRunTests;
 	static JButton btnEditTests;
 
 	// Controls to be displayed on panelCreateTests [Create Tests Panel]
@@ -144,9 +133,8 @@ public class ActioTestGenerator extends JFrame {
 		// mainFrame.setSize(1000, 1000);
 
 		btnCreateTests = new JButton("Create Tests");
-		btnEditTests = new JButton("Update Tests");
+		btnEditTests = new JButton(" Edit Tests");
 		btnViewTests = new JButton("View Tests");
-		btnRunTests = new JButton("Run Tests");
 		btnAddStep = new JButton("Add Step");
 
 		lblisEnabled = new JLabel("Is Enabled :");
@@ -167,16 +155,16 @@ public class ActioTestGenerator extends JFrame {
 		comboActions = new JComboBox();
 
 		String[] priorities = new String[] { "", "1", "2", "3" };
-		JComboBox<Object>comboPriority = new JComboBox<Object>(priorities);
+		JComboBox<Object> comboPriority = new JComboBox<Object>(priorities);
 
 		String[] isEnabledStatus = new String[] { "", "Y", "N" };
-		JComboBox<Object>comboIsEnabled = new JComboBox<Object>(isEnabledStatus);
+		JComboBox<Object> comboIsEnabled = new JComboBox<Object>(isEnabledStatus);
 
 		String[] testSuites = new String[] { "", "Smoke Suite", "Sanity Suite", "Regression" };
-		JComboBox<Object>comboTestSuite = new JComboBox<Object>(testSuites);
+		JComboBox<Object> comboTestSuite = new JComboBox<Object>(testSuites);
 
-		String[] platforms = new String[] { "", "Web", "IOS", "Android","IOSBrowser","API","Android Browser" };
-		JComboBox<Object>comboPlatform = new JComboBox<Object>(platforms);
+		String[] platforms = new String[] { "", "Web", "IOS", "Android", "IOSBrowser", "API", "Android Browser" };
+		JComboBox<Object> comboPlatform = new JComboBox<Object>(platforms);
 
 		textTestCaseID = new JTextField();
 		textDescription = new JTextField();
@@ -216,11 +204,9 @@ public class ActioTestGenerator extends JFrame {
 		DefaultTableModel tbl = new DefaultTableModel();
 		parameterTable = new JTable(tbl);
 		parameterTable.setRowHeight(20);
-		
-	
-			parameterTable.setModel(model);
-		
-	
+
+		parameterTable.setModel(model);
+
 		scrollPaneParameters = new JScrollPane(parameterTable);
 
 		masterModel.setColumnIdentifiers(masterColumns);
@@ -238,14 +224,14 @@ public class ActioTestGenerator extends JFrame {
 		JPanel panelMenu = new JPanel();
 		JPanel panelCreateTests = new JPanel();
 		JPanel panelViewTests = new JPanel();
-		JPanel panelRunTests = new JPanel();
+		JPanel panelEditTests = new JPanel();
 		JPanel panelEdit = new JPanel();
 		panelMenu.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panelMenu.setBackground(SystemColor.inactiveCaptionBorder);
 
 		mainFrame.getContentPane().add(panelMenu, "name_12027148937960");
 		mainFrame.getContentPane().add(panelCreateTests, "name_497328569415918");
-		mainFrame.getContentPane().add(panelRunTests, "name_497328600132521");
+		mainFrame.getContentPane().add(panelEditTests, "name_497328600132521");
 		mainFrame.getContentPane().add(panelViewTests, "name_12030013541046");
 		mainFrame.getContentPane().add(panelEdit, "");
 
@@ -270,13 +256,8 @@ public class ActioTestGenerator extends JFrame {
 			}
 		});
 
-		
-		
-		//#########################################EditPAge#####################################################
-		
-		
-		
-		
+		// #########################################EditPAge#####################################################
+
 		ActioTestGenerator self1 = this;
 		btnEditTests.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -289,13 +270,12 @@ public class ActioTestGenerator extends JFrame {
 		// ***************************************************************************************
 		panelMenu.setLayout(null);
 		panelCreateTests.setLayout(null);
-		panelRunTests.setLayout(null);
+		panelEditTests.setLayout(null);
 		panelEdit.setLayout(null);
 
 		panelMenu.setVisible(true);
 		panelMenu.add(btnCreateTests);
 		panelMenu.add(btnViewTests);
-		panelMenu.add(btnRunTests);
 		panelMenu.add(btnEditTests);
 
 		panelCreateTests.add(lblisEnabled);
@@ -316,7 +296,7 @@ public class ActioTestGenerator extends JFrame {
 		panelCreateTests.add(textModule);
 		panelCreateTests.add(textTestCaseName);
 		panelCreateTests.add(btnCreateSaveTestButton);
-		
+
 		panelCreateTests.add(btnBackToMain);
 		panelCreateTests.add(btnAddStep);
 		panelCreateTests.add(btnDeleteStep);
@@ -328,7 +308,6 @@ public class ActioTestGenerator extends JFrame {
 		panelCreateTests.add(scrollPaneMaster, BorderLayout.CENTER);
 		lblSave.setVisible(false);
 		panelCreateTests.add(lblSave);
-		
 
 		lblisEnabled.setBounds(9, 30, 86, 33);
 		lblActions.setBounds(9, 242, 86, 33);
@@ -352,9 +331,8 @@ public class ActioTestGenerator extends JFrame {
 		textDescription.setBounds(473, 242, 439, 33);
 
 		btnCreateTests.setBounds(565, 269, 116, 35);
-		btnViewTests.setBounds(565, 339, 116, 35);
-		btnEditTests.setBounds(565,470, 116, 35);
-		btnRunTests.setBounds(565, 410, 116, 35);
+		btnEditTests.setBounds(565, 339, 116, 35);
+		btnViewTests.setBounds(565, 410, 116, 35);
 		btnAddStep.setBounds(1097, 612, 116, 35);
 		btnDeleteStep.setBounds(1263, 612, 116, 35);
 
@@ -409,7 +387,7 @@ public class ActioTestGenerator extends JFrame {
 					Label cell;
 					for (String key : keys) {
 						int size1 = sheet2.getRows();
-					
+
 						cell = new Label(0, size1, textTestCaseID.getText());
 						sheet2.addCell(cell);
 						cell = new Label(1, size1, key);
@@ -422,7 +400,7 @@ public class ActioTestGenerator extends JFrame {
 					copy2.close();
 					workbook2.close();
 					mapValues.clear();
-					
+
 				} catch (Exception e1) {
 
 					e1.printStackTrace();
@@ -470,9 +448,8 @@ public class ActioTestGenerator extends JFrame {
 						model2.removeRow(i);
 					}
 				}
-				
+
 				lblSave.setVisible(true);
-				
 
 			}
 		});
@@ -496,7 +473,7 @@ public class ActioTestGenerator extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				panelViewTests.setVisible(false);
 				panelCreateTests.setVisible(false);
-				panelRunTests.setVisible(false);
+				panelEditTests.setVisible(false);
 				panelMenu.setVisible(true);
 
 				/// set all the fields enabled and clear the same.
@@ -543,9 +520,7 @@ public class ActioTestGenerator extends JFrame {
 
 			}
 		});
-			
-	
-		
+
 		comboActions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -559,45 +534,37 @@ public class ActioTestGenerator extends JFrame {
 						// It will make the cells of Column-1 not Editable
 						return true;
 					}
-					
+
 				};
-				
-				String[] str= {"Confirm",""};
+
+				String[] str = { "Confirm", "" };
 				parameterTable.setModel(model);
 				model.addRow(str);
-				
 
 			}
 		});
-		
-		
+
 		comboIsEnabled.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				lblSave.setVisible(false);
 			}
 		});
-		
-		
-		  
-		 
-		
-		 
+
 		textDescription.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-			      if (textDescription.getText().trim().isEmpty())
-			      {
-			    	  btnAddStep.setEnabled(false);
-			        return;
-			      }
-			    
-			      btnAddStep.setEnabled(true);
+				if (textDescription.getText().trim().isEmpty()) {
+					btnAddStep.setEnabled(false);
+					return;
+				}
+
+				btnAddStep.setEnabled(true);
 			}
 		});
 
@@ -605,15 +572,13 @@ public class ActioTestGenerator extends JFrame {
 
 		btnAddStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String testcaseID	=	textTestCaseID.getText();
-				
-				boolean flag	=	false;
-				
-				if(testcaseID.equalsIgnoreCase(""))
-				{
+				String testcaseID = textTestCaseID.getText();
+
+				boolean flag = false;
+
+				if (testcaseID.equalsIgnoreCase("")) {
 					JOptionPane.showMessageDialog(mainFrame.getComponent(0), "Please Enter TestCaseID!!!");
-				}
-				else {
+				} else {
 					try {
 						testCaseFile = utilities.getExcelFile("testfile");
 						Workbook workbook = null;
@@ -621,89 +586,82 @@ public class ActioTestGenerator extends JFrame {
 						Sheet sheet = workbook.getSheet(0);
 						for (int i = 1; i < sheet.getRows(); i++) {
 							Cell cell = sheet.getCell(4, i);
-							if (cell.getContents().equalsIgnoreCase(testcaseID)&&(!cell.getContents().equalsIgnoreCase(""))) {
-								flag	=	true;
-								
+							if (cell.getContents().equalsIgnoreCase(testcaseID)
+									&& (!cell.getContents().equalsIgnoreCase(""))) {
+								flag = true;
+
 								break;
 							}
 						}
-						
+
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-					
-				if(flag	==true)
-				{
-					JOptionPane.showMessageDialog(mainFrame.getComponent(0), "TestCaseID Already Present!!!");
-					textTestCaseID.setText("");
-				}else {
-					
-				if (masterTable.getRowCount() == 0) {
-					row[0] = comboIsEnabled.getSelectedItem();
-					row[1] = comboTestSuite.getSelectedItem();
-					row[2] = textModule.getText();
-					row[3] = comboPriority.getSelectedItem();
-					row[4] = textTestCaseID.getText();
-					row[5] = textTestCaseName.getText();
-					row[6] = textTestData.getText();
-					row[7] = textDescription.getText();
-					row[8] = comboActions.getSelectedItem();
-					row[9] = comboPlatform.getSelectedItem();
-					masterModel.addRow(row);
 
-				} else if (masterTable.getRowCount() > 0) {
-					row[0] = "";
-					row[1] = "";
-					row[2] = "";
-					row[3] = "";
-					row[4] = "";
-					row[5] = "";
-					row[6] = "";
-					row[7] = textDescription.getText();
-					row[8] = comboActions.getSelectedItem();
-					row[9] = "";
-					masterModel.addRow(row);
+					if (flag == true) {
+						JOptionPane.showMessageDialog(mainFrame.getComponent(0), "TestCaseID Already Present!!!");
+						textTestCaseID.setText("");
+					} else {
 
-				}
-				
-				
-				
-				
-					
-				
+						if (masterTable.getRowCount() == 0) {
+							row[0] = comboIsEnabled.getSelectedItem();
+							row[1] = comboTestSuite.getSelectedItem();
+							row[2] = textModule.getText();
+							row[3] = comboPriority.getSelectedItem();
+							row[4] = textTestCaseID.getText();
+							row[5] = textTestCaseName.getText();
+							row[6] = textTestData.getText();
+							row[7] = textDescription.getText();
+							row[8] = comboActions.getSelectedItem();
+							row[9] = comboPlatform.getSelectedItem();
+							masterModel.addRow(row);
 
-				int nRow = model.getRowCount(), nCol = model.getColumnCount();
-			
-				for (int i = 0; i < nRow-1; i++) {
-					for (int j = 0; j < nCol; j += 2) {
-						
-						
-						mapValues.put(model.getValueAt(i, j).toString(), model.getValueAt(i, j + 1).toString());
-						
-					}
+						} else if (masterTable.getRowCount() > 0) {
+							row[0] = "";
+							row[1] = "";
+							row[2] = "";
+							row[3] = "";
+							row[4] = "";
+							row[5] = "";
+							row[6] = "";
+							row[7] = textDescription.getText();
+							row[8] = comboActions.getSelectedItem();
+							row[9] = "";
+							masterModel.addRow(row);
 
-				}
-				textDescription.setText("");
-				comboIsEnabled.setEnabled(false);
-				comboPriority.setEnabled(false);
-				comboPlatform.setEnabled(false);
-				boolean b = false;
-				textModule.setEditable(b);
-				textTestCaseID.setEditable(b);
-				textTestCaseName.setEditable(b);
-				textTestData.setEditable(b);
-				textTestSuite.setEditable(b);
+						}
+
+						int nRow = model.getRowCount(), nCol = model.getColumnCount();
+
+						for (int i = 0; i < nRow - 1; i++) {
+							for (int j = 0; j < nCol; j += 2) {
+
+								mapValues.put(model.getValueAt(i, j).toString(), model.getValueAt(i, j + 1).toString());
+
+							}
+
+						}
+						textDescription.setText("");
+						comboIsEnabled.setEnabled(false);
+						comboPriority.setEnabled(false);
+						comboPlatform.setEnabled(false);
+						boolean b = false;
+						textModule.setEditable(b);
+						textTestCaseID.setEditable(b);
+						textTestCaseName.setEditable(b);
+						textTestData.setEditable(b);
+						textTestSuite.setEditable(b);
 					}
 				}
 			}
-			
+
 		});
 
 	}
 
 	public void checkFieldsFull() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	static void populateActions(JComboBox combo, File file, int columnNumber) {
@@ -713,28 +671,25 @@ public class ActioTestGenerator extends JFrame {
 			workbook = Workbook.getWorkbook(file);
 			Sheet sheet = workbook.getSheet(0);
 			actions.clear();
-			 ArrayList  details = new ArrayList();
+			ArrayList details = new ArrayList();
 			for (int i = 1; i < sheet.getRows(); i++) {
 				Cell cell = sheet.getCell(columnNumber, i);
-				
-				 String con = cell.getContents();
-			        if (con != null && con.length() != 0 && cell.getContents().equalsIgnoreCase(con)) {   
-			        	
-			            System.out.print(con);
-			            System.out.print("|");
-			        }
-			        else {
-			            continue;
-			        }
+
+				String con = cell.getContents();
+				if (con != null && con.length() != 0 && cell.getContents().equalsIgnoreCase(con)) {
+
+					System.out.print(con);
+					System.out.print("|");
+				} else {
+					continue;
+				}
 				actions.add(con);
 			}
 			Iterator<String> itr = actions.iterator();
 			while (itr.hasNext()) {
 				combo.addItem(itr.next());
 			}
-			
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -745,7 +700,7 @@ public class ActioTestGenerator extends JFrame {
 		try {
 			Utilities utilities = new Utilities();
 			// Get parameters from ForTestGeneratorFile
-			
+
 			actionLibraryFile = utilities.getExcelFile("actionLibraryFile");
 			Workbook workbook = null;
 			ArrayList<String> temp = new ArrayList<String>();
@@ -757,10 +712,9 @@ public class ActioTestGenerator extends JFrame {
 					temp.add(cell.getContents());
 			}
 
-			
 			parameterFile = utilities.getExcelFile("parameterFile");
 			Workbook workbook2 = null;
-			
+
 			workbook2 = Workbook.getWorkbook(parameterFile);
 			Sheet sheet2 = workbook2.getSheet(0);
 			ArrayList<String> paraValues = new ArrayList<String>();
@@ -769,11 +723,11 @@ public class ActioTestGenerator extends JFrame {
 			Cell cell1 = null, cell2 = null;
 
 			while (itr.hasNext()) {
-				
+
 				str = itr.next();
-				
-						paraValues.add(" ");
-						
+
+				paraValues.add(" ");
+
 			} // end of while
 
 			String[] parametersArray = temp.toArray(new String[temp.size()]);
@@ -786,11 +740,11 @@ public class ActioTestGenerator extends JFrame {
 
 			for (int r = 0; r < parametersValues.length; r++) {
 				dataValues[r][1] = parametersValues[r];
-				}
-				
+			}
+
 			data = dataValues;
 		} catch (Exception e) {
-			
+
 		}
 
 	}
@@ -801,7 +755,6 @@ public class ActioTestGenerator extends JFrame {
 			mainFrame.setVisible(true);
 
 		} catch (Exception e) {
-			
 
 		}
 	}
