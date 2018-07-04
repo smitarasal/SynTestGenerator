@@ -77,8 +77,8 @@ public class EditDetails {
 		comboboxmodule.setBounds(135, 20, 225, 33);
 		panelEdit.add(comboboxmodule);
 
-		JLabel lblNewLabel = new JLabel("Select Test Case :");
-		lblNewLabel.setBounds(389, 20, 210, 33);
+		JLabel lblNewLabel = new JLabel("Select Test Case Name:");
+		lblNewLabel.setBounds(380, 20, 210, 33);
 		panelEdit.add(lblNewLabel);
 		final JComboBox<Object> comboBoxTestCasesName = new JComboBox<Object>();
 		excelTestCaseNameDropdown = new ArrayList<String>(Arrays.asList(Test.getExcelTestCaseNames()));
@@ -86,7 +86,7 @@ public class EditDetails {
 		Collections.sort(excelTestCaseNameDropdown);
 		comboBoxTestCasesName.setModel(new DefaultComboBoxModel<Object>(excelTestCaseNameDropdown.toArray()));
 		comboBoxTestCasesName.setSelectedIndex(0);
-		comboBoxTestCasesName.setBounds(490, 20, 225, 33);
+		comboBoxTestCasesName.setBounds(520, 20, 225, 33);
 		panelEdit.add(comboBoxTestCasesName);
 
 		JScrollPane scrollPane1 = new JScrollPane();
