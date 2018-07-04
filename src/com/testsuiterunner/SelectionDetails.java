@@ -145,6 +145,7 @@ public class SelectionDetails {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		TableColumnModel colModel = table.getColumnModel();
 		changeColumnsWidth(colModel);
+
 		JButton btnSearchSelected = new JButton("Search Selected");
 		btnSearchSelected.addActionListener(new ActionListener() {
 			@Override
@@ -308,16 +309,12 @@ public class SelectionDetails {
 		return getSelectedsuite();
 	}
 
-	public static void setSelectedModule1(String selectedModule) {
+	public static void setSelectedModule(String selectedModule) {
 		SelectionDetails.selectedModule = selectedModule;
 	}
 
-	public static String getSelectedModule1() {
-		return selectedModule;
-	}
-
 	public static String getSelectedModule() {
-		return getSelectedModule1();
+		return selectedModule;
 	}
 
 	public static String getSelectedPriority() {

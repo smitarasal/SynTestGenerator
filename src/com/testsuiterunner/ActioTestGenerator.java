@@ -258,10 +258,10 @@ public class ActioTestGenerator extends JFrame {
 
 		// #########################################EditPAge#####################################################
 
-		ActioTestGenerator self1 = this;
 		btnEditTests.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditPage.EditButton(self1, panelMenu, panelEdit);
+				// EditPage.EditButton(self, panelMenu, panelEdit);
+				EditDetails.EditButtonCode(self, panelMenu, panelEdit);
 				panelMenu.setVisible(false);
 				panelEdit.setVisible(true);
 

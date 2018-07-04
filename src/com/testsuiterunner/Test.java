@@ -20,6 +20,7 @@ public class Test {
 	static Set<String> prioritySet = new HashSet<String>();
 	static Set<String> platformSet = new HashSet<String>();
 	static Set<String> testcaseid = new HashSet<String>();
+	static Set<String> testcaseName = new HashSet<String>();
 	static int tcount = 0;
 
 	public static void main(String[] args) {
@@ -87,6 +88,7 @@ public class Test {
 					prioritySet.add(testCase[3]);
 					platformSet.add(testCase[9]);
 					testcaseid.add(testCase[4]);
+					testcaseName.add(testCase[5]);
 
 				} else {
 					if (!skip) {
@@ -133,6 +135,13 @@ public class Test {
 		suiteList = suiteSet.toArray(new String[suiteSet.size()]);
 		Arrays.sort(suiteList);
 		return suiteList;
+	}
+
+	public static String[] getExcelTestCaseNames() {
+		String[] testCaseNameList = new String[testcaseName.size()];
+		testCaseNameList = testcaseName.toArray(new String[testcaseName.size()]);
+		Arrays.sort(testCaseNameList);
+		return testCaseNameList;
 	}
 
 	public static String[] getExcelModules() {
