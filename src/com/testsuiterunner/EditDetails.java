@@ -95,6 +95,7 @@ public class EditDetails {
 		table = new JTable();
 		mytable = new MyTableModelEdit(testDetailsListView, excelHeaders);
 		table.setModel(mytable);
+		table.setEnabled(false);
 		scrollPane1.setViewportView(table);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		TableColumnModel colModel = table.getColumnModel();
@@ -108,6 +109,7 @@ public class EditDetails {
 						comboboxmodule.getSelectedItem().toString());
 				mytable = new MyTableModelEdit(testDetailsListView, excelHeaders);
 				table.setModel(mytable);
+				table.setEnabled(false);
 				TableColumnModel colModel = table.getColumnModel();
 				changeColumnsWidth(colModel);
 
@@ -156,14 +158,13 @@ public class EditDetails {
 	}
 
 	static void changeColumnsWidth(TableColumnModel colModel) {
-		colModel.getColumn(0).setPreferredWidth(00);
+		colModel.getColumn(0).setPreferredWidth(40);
 		colModel.getColumn(2).setPreferredWidth(35);
 		colModel.getColumn(3).setPreferredWidth(10);
 		colModel.getColumn(5).setPreferredWidth(125);
 		colModel.getColumn(6).setPreferredWidth(125);
 		colModel.getColumn(7).setPreferredWidth(235);
 		colModel.getColumn(8).setPreferredWidth(200);
-		table.removeColumn(colModel.getColumn(0));
 	}
 
 	public static void setSelectedTestCasesName(String selectedTestCasesName) {
@@ -213,6 +214,7 @@ public class EditDetails {
 		comboBoxTestCasesName.setSelectedIndex(0);
 		mytable = new MyTableModelEdit(testDetailsListView, excelHeaders);
 		table.setModel(mytable);
+		table.setEnabled(false);
 		TableColumnModel colModel1 = table.getColumnModel();
 		changeColumnsWidth(colModel1);
 		scrollPane1.setViewportView(table);

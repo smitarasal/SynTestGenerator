@@ -28,16 +28,16 @@ class MyTableModelEdit extends AbstractTableModel {
 
 			TestDetail testCase = testcases.next();
 
-			if (testCase.testSuite != null && (selectedTestCasesName.equals("All") && selectedModule.equals("All"))) {
+			if (testCase.testName != null && (selectedTestCasesName.equals("All") && selectedModule.equals("All"))) {
 				combination(j, testCase);
 				j++;
-			} else if (testCase.testSuite.equals(selectedTestCasesName) && testCase.testModule.equals(selectedModule)) {
+			} else if (testCase.testName.equals(selectedTestCasesName) && testCase.testModule.equals(selectedModule)) {
 				combination(j, testCase);
 				j++;
 			} else if (selectedTestCasesName.equals("All") && testCase.testModule.equals(selectedModule)) {
 				combination(j, testCase);
 				j++;
-			} else if (testCase.testSuite.equals(selectedTestCasesName) && selectedModule.equals("All")) {
+			} else if (testCase.testName.equals(selectedTestCasesName) && selectedModule.equals("All")) {
 				combination(j, testCase);
 				j++;
 			}

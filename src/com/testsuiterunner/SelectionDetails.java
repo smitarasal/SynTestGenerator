@@ -141,6 +141,7 @@ public class SelectionDetails {
 		table = new JTable();
 		mytable = new MyTableModel(testDetailsListView, excelHeaders);
 		table.setModel(mytable);
+		table.setEnabled(false);
 		scrollPane1.setViewportView(table);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		TableColumnModel colModel = table.getColumnModel();
@@ -177,6 +178,7 @@ public class SelectionDetails {
 				}
 
 				table.setModel(mytable);
+				table.setEnabled(false);
 				TableColumnModel colModel = table.getColumnModel();
 				changeColumnsWidth(colModel);
 				testCountlable(lblInfo);
@@ -383,6 +385,7 @@ public class SelectionDetails {
 		comboBoxSuite.setSelectedIndex(0);
 		mytable = new MyTableModel(testDetailsListView, excelHeaders);
 		table.setModel(mytable);
+		table.setEnabled(false);
 		TableColumnModel colModel1 = table.getColumnModel();
 		changeColumnsWidth(colModel1);
 		testCountlable(lblInfo);
@@ -390,14 +393,7 @@ public class SelectionDetails {
 	}
 
 	public static void testCountlable(JLabel lblInfo) {
-		lblInfo.removeAll();
-		lblInfo.validate();
-		lblInfo.repaint();
-		lblInfo.setText("List of selected Test Cases : ");
-		// System.out.println("testcount:_____________________________________");
-		// System.out.println("TestCasesIDLst:" + Global.TestCasesIDLst.size());
-		// System.out.println("testcount:" + testcount);
-		// System.out.println("testcount:_____________________________________");
+		lblInfo.setText("");
 		lblInfo.setText("List of selected Test Cases : " + Global.TestCasesIDLst.size());
 	}
 
