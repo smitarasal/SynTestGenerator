@@ -32,7 +32,7 @@ public class EditDetails {
 	static Boolean isdatapresent = true;
 	static MyTableModelEdit mytable = null;
 	public static JLabel lblInfo = null;
-	static int testcount = 0;
+	static int testcount;
 	static JTable table;
 
 	private static List<String> excelTestCaseName = null;
@@ -108,10 +108,37 @@ public class EditDetails {
 				new EditDetails(comboBoxTestCasesName.getSelectedItem().toString(),
 						comboboxmodule.getSelectedItem().toString());
 				mytable = new MyTableModelEdit(testDetailsListView, excelHeaders);
+				Global.TestCasesIDLst.clear();
+				try {
+					Object[][] tableData = mytable.getdisplayData();
+					Global.tableData = tableData;
+					if (Global.tableData != null) {
+						testcount = Utilities.getUITestCount();
+						TestCasesIDLst = Utilities.getUITestIDList();
+
+					} else {
+						testcount = utilities.getTestCount();
+						Global.TestCasesIDLst.clear();
+					}
+
+				} catch (Exception e1) {
+
+				}
+				if (isdatapresent.equals(true)) {
+				} else {
+					testcount = 0;
+					Global.TestCasesIDLst.clear();
+				}
+
 				table.setModel(mytable);
+				System.out.println(mytable.getRowCount());
+				System.out.println(mytable.toString());
 				table.setEnabled(false);
 				TableColumnModel colModel = table.getColumnModel();
 				changeColumnsWidth(colModel);
+				String mydata = Global.TestCasesIDLst.toString().replace(",", "").replace("[", "").replace("]", "");
+				System.out.println("data:" + Global.TestCasesIDLst.toString());
+				System.out.println("data for CMD:" + mydata);
 
 			}
 		});
@@ -144,13 +171,13 @@ public class EditDetails {
 
 	public static void getExcelData() {
 		try {
-			testDetailsListView = Test.getDataNew();
+			testDetailsListView = Test.getData();
 			Arrays.asList(testDetailsListView);
 			excelHeaders = Test.getexcelHeader();
-			testcount = Test.getexcelrowcount();
 			setExcelTestCasesName(new ArrayList<String>(Arrays.asList(Test.getExcelTestCaseNames())));
 			setExcelModules(new ArrayList<String>(Arrays.asList(Test.getExcelModules())));
-			Global.TestCasesIDLst = new ArrayList<String>(Arrays.asList(Test.getExcelTestCasesID()));
+			// testcount = new
+			// ArrayList<String>(Arrays.asList(Test.getExcelTestCasesID()));
 			selections = new EditDetails("All", "All");
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -158,7 +185,7 @@ public class EditDetails {
 	}
 
 	static void changeColumnsWidth(TableColumnModel colModel) {
-		colModel.getColumn(0).setPreferredWidth(40);
+		colModel.getColumn(0).setPreferredWidth(45);
 		colModel.getColumn(2).setPreferredWidth(35);
 		colModel.getColumn(3).setPreferredWidth(10);
 		colModel.getColumn(5).setPreferredWidth(125);

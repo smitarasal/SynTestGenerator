@@ -6,7 +6,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.function.Predicate;
 
+import com.main.utilitylib.Global;
 import com.main.utilitylib.Utilities;
 
 public class Test {
@@ -16,12 +18,14 @@ public class Test {
 	static XlsTestsMapping uiData = null;
 	static Set<String> moduleSet = new HashSet<String>();
 	static Set<String> suiteSet = new HashSet<String>();
+	static Set<String> isenable = new HashSet<String>();
 	static Set<String> testStepSet = new HashSet<String>();
 	static Set<String> prioritySet = new HashSet<String>();
 	static Set<String> platformSet = new HashSet<String>();
 	static Set<String> testcaseid = new HashSet<String>();
 	static Set<String> testcaseName = new HashSet<String>();
 	static int tcount = 0;
+	static int isecountN = 0;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -65,65 +69,66 @@ public class Test {
 				excelplatform = null;
 		ArrayList<TestDetail> selectedList = new ArrayList<TestDetail>();
 		TestDetail testData;
-		boolean skip = false;
+
 		while (testcases.hasNext()) {
 			String[] testCase = testcases.next();
-			if (!(testCase[1] == null) && testCase[0].equalsIgnoreCase("N")) {
-				skip = true;
-			} else {
-				if (!(testCase[1] == null) && testCase[0].equalsIgnoreCase("Y")) {
-					skip = false;
-					excelIsEnabled = testCase[0];
-					excelsuite = testCase[1];
-					excelmodule = testCase[2];
-					priority = testCase[3];
-					exceltestcaseId = testCase[4];
-					exceltestcaseName = testCase[5];
-					exceltestData = testCase[6];
-					excelteststepDesc = testCase[7];
-					excelAction = testCase[8];
-					excelplatform = testCase[9];
-					suiteSet.add(testCase[1]);
-					moduleSet.add(testCase[2]);
-					prioritySet.add(testCase[3]);
-					platformSet.add(testCase[9]);
-					testcaseid.add(testCase[4]);
-					testcaseName.add(testCase[5]);
+			if (!(testCase[1] == null)) {
+				excelIsEnabled = testCase[0];
+				excelsuite = testCase[1];
+				excelmodule = testCase[2];
+				priority = testCase[3];
+				exceltestcaseId = testCase[4];
+				exceltestcaseName = testCase[5];
+				exceltestData = testCase[6];
+				excelteststepDesc = testCase[7];
+				excelAction = testCase[8];
+				excelplatform = testCase[9];
+				suiteSet.add(testCase[1]);
+				isenable.add(testCase[0]);
+				moduleSet.add(testCase[2]);
+				prioritySet.add(testCase[3]);
+				platformSet.add(testCase[9]);
+				testcaseid.add(testCase[4]);
+				testcaseName.add(testCase[5]);
 
-				} else {
-					if (!skip) {
-						excelteststepDesc = testCase[7];
-						excelAction = testCase[8];
-					}
-				}
+			} else {
+				excelteststepDesc = testCase[7];
+				excelAction = testCase[8];
+
 			}
 
 			testData = new TestDetail(excelIsEnabled, excelsuite, excelmodule, priority, exceltestcaseId,
 					exceltestcaseName, exceltestData, excelteststepDesc, excelAction, excelplatform);
 			selectedList.add(testData);
-
 		}
-
 		return selectedList;
-
 	}
 
 	public static ArrayList<TestDetail> getDataNew() {
 		ArrayList<TestDetail> selectedListnew = new ArrayList<TestDetail>();
-		ArrayList<TestDetail> selectedListnew1 = new ArrayList<TestDetail>();
 		selectedListnew = getData();
-		for (int counter = 0; counter < selectedListnew.size(); counter++) {
 
-			if (!(counter == selectedListnew.size() - 1)) {
-				int c2 = counter + 1;
-				if ((!(selectedListnew.get(c2).toString().equals(selectedListnew.get(counter).toString())))
-						|| counter == selectedListnew.size()) {
-					selectedListnew1.add(selectedListnew.get(c2));
-				}
+		Predicate<TestDetail> isEnabledfilter = new Predicate<TestDetail>() {
+			@Override
+			public boolean test(TestDetail t) {
+				// return false;
+				return t.testIsEnabled.startsWith("N");
 			}
-		}
+		};
+		selectedListnew.removeIf(isEnabledfilter);
 
-		return selectedListnew1;
+		Set<String> hashsetList = new HashSet<String>();
+
+		for (TestDetail testDetail : selectedListnew) {
+			hashsetList.add(testDetail.testID);
+			if (selectedListnew.contains(testcaseid)) {
+				System.out.println("testDetail" + testDetail);
+			}
+			// System.out.println("selectedListnew" + selectedListnew);
+		}
+		System.out.printf("\nUnique values using HashSet: %s%n", hashsetList);
+		Global.TestCasesIDLst = new ArrayList<String>(hashsetList);
+		return selectedListnew;
 	}
 
 	/*
@@ -161,7 +166,9 @@ public class Test {
 
 	public static int getexcelrowcount() {
 		tcount = testcaseid.size();
+		tcount = tcount - isecountN;
 		return tcount;
+
 	}
 
 	public static String[] getExcelplatformSet() {
@@ -173,7 +180,6 @@ public class Test {
 	}
 
 	public static String[] getExcelTestCasesID() {
-
 		String[] TestCasesIDList = new String[testcaseid.size()];
 		TestCasesIDList = testcaseid.toArray(new String[testcaseid.size()]);
 		Arrays.sort(TestCasesIDList);
@@ -182,6 +188,15 @@ public class Test {
 
 	public static String[] getexcelHeader() {
 		return uiData.excelHeader;
+	}
+
+	public static String[] getExcelTestCasesIDcount() {
+		String[] TestCasesIDList = null;
+		if (isenable.equals("Y")) {
+			System.out.println("testcaseid-- :" + testcaseid);
+		}
+		return TestCasesIDList;
+
 	}
 
 }

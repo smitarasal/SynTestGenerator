@@ -29,6 +29,7 @@ public class SelectionDetails {
 	public static String selectedPlatform = null;
 	static List<String> TestCasesIDLst = new ArrayList<String>();
 	static ArrayList<TestDetail> testDetailsListView = null;
+	static ArrayList<TestDetail> testDetailsListView1 = null;
 	private static List<String> excelTestData = null;
 	public static List<String> excelTestCaseID = null;
 	public static SelectionDetails selections = null;
@@ -178,6 +179,7 @@ public class SelectionDetails {
 				}
 
 				table.setModel(mytable);
+
 				table.setEnabled(false);
 				TableColumnModel colModel = table.getColumnModel();
 				changeColumnsWidth(colModel);
@@ -224,11 +226,8 @@ public class SelectionDetails {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					String mydata = Global.TestCasesIDLst.toString().replace(",", "").replace("[", "").replace("]", "");
-					System.out.println("--------------------------------------------------------------");
 					System.out.println("data:" + Global.TestCasesIDLst.toString());
-					System.out.println("_______________________________________________________________");
 					System.out.println("data for CMD:" + mydata);
-					System.out.println("--------------------------------------------------------------");
 
 					try {
 						Runtime.getRuntime()
@@ -237,29 +236,6 @@ public class SelectionDetails {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-
-					/*
-					 * try { String[] command = new String[3]; command[0] =
-					 * "cmd"; command[1] = "/c"; command[2] =
-					 * "E: && cd E:\\actio-synerzip\\actio-synerzip && mvn package exec:java -Dexec.mainClass=\"com.testsuiterunner.Invoke\" -Dexec.args=\""
-					 * + mydata + "\"";
-					 * 
-					 * Process p = Runtime.getRuntime().exec(command);
-					 * 
-					 * BufferedReader reader = new BufferedReader(new
-					 * InputStreamReader(p.getInputStream())); String line =
-					 * reader.readLine(); while (line != null) {
-					 * System.out.println(line); line = reader.readLine(); }
-					 * BufferedReader stdInput = new BufferedReader(new
-					 * InputStreamReader(p.getInputStream())); BufferedReader
-					 * stdError = new BufferedReader(new
-					 * InputStreamReader(p.getErrorStream())); String Error;
-					 * while ((Error = stdError.readLine()) != null) {
-					 * System.out.println(Error); } while ((Error =
-					 * stdInput.readLine()) != null) {
-					 * System.out.println(Error); } } catch (Exception e1) {
-					 * e1.printStackTrace(); }
-					 */
 
 					JOptionPane.showMessageDialog(panelViewTests,
 							"<html> <b> Execution Started Successfully, Click 'Ok' button to return Main Screen </b> </html>");
@@ -275,13 +251,12 @@ public class SelectionDetails {
 	public static void getExcelData() {
 		try {
 			testDetailsListView = Test.getDataNew();
+
 			Arrays.asList(testDetailsListView);
 			excelHeaders = Test.getexcelHeader();
-			testcount = Test.getexcelrowcount();
 			setExcelSuites(new ArrayList<String>(Arrays.asList(Test.getExcelSuites())));
 			setExcelModules(new ArrayList<String>(Arrays.asList(Test.getExcelModules())));
 			setExcelPlatform(new ArrayList<String>(Arrays.asList(Test.getExcelplatformSet())));
-			Global.TestCasesIDLst = new ArrayList<String>(Arrays.asList(Test.getExcelTestCasesID()));
 			selections = new SelectionDetails("All", "All", "All", "All");
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -393,7 +368,6 @@ public class SelectionDetails {
 	}
 
 	public static void testCountlable(JLabel lblInfo) {
-		lblInfo.setText("");
 		lblInfo.setText("List of selected Test Cases : " + Global.TestCasesIDLst.size());
 	}
 
