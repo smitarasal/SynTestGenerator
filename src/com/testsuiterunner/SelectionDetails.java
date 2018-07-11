@@ -226,8 +226,8 @@ public class SelectionDetails {
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					String mydata = Global.TestCasesIDLst.toString().replace(",", "").replace("[", "").replace("]", "");
-					System.out.println("data:" + Global.TestCasesIDLst.toString());
-					System.out.println("data for CMD:" + mydata);
+					System.out.println("data: " + Global.TestCasesIDLst.toString());
+					System.out.println("data for CMD: " + mydata);
 
 					try {
 						Runtime.getRuntime()

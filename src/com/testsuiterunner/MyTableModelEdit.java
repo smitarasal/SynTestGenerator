@@ -13,7 +13,7 @@ class MyTableModelEdit extends AbstractTableModel {
 	private Object[][] tableDataEdit = null, displayData = null;
 
 	public MyTableModelEdit(ArrayList<TestDetail> data, String[] headers) {
-		String selectedTestCasesName = EditDetails.getSelectedTestCasesName();
+		String selectedTestCasesID = EditDetails.getSelectedTestCasesName();
 		String selectedModule = EditDetails.getSelectedModule();
 		columnNames = headers;
 
@@ -28,16 +28,16 @@ class MyTableModelEdit extends AbstractTableModel {
 
 			TestDetail testCase = testcases.next();
 
-			if (testCase.testName != null && (selectedTestCasesName.equals("All") && selectedModule.equals("All"))) {
+			if (testCase.testID != null && (selectedTestCasesID.equals("All") && selectedModule.equals("All"))) {
 				combination(j, testCase);
 				j++;
-			} else if (testCase.testName.equals(selectedTestCasesName) && testCase.testModule.equals(selectedModule)) {
+			} else if (testCase.testID.equals(selectedTestCasesID) && testCase.testModule.equals(selectedModule)) {
 				combination(j, testCase);
 				j++;
-			} else if (selectedTestCasesName.equals("All") && testCase.testModule.equals(selectedModule)) {
+			} else if (selectedTestCasesID.equals("All") && testCase.testModule.equals(selectedModule)) {
 				combination(j, testCase);
 				j++;
-			} else if (testCase.testName.equals(selectedTestCasesName) && selectedModule.equals("All")) {
+			} else if (testCase.testID.equals(selectedTestCasesID) && selectedModule.equals("All")) {
 				combination(j, testCase);
 				j++;
 			}
