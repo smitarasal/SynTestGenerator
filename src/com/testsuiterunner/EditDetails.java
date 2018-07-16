@@ -127,6 +127,64 @@ public class EditDetails {
 		comboBoxTestCasesName.setBounds(520, 20, 225, 33);
 		panelEdit.add(comboBoxTestCasesName);
 
+		// _____________________________________________________________________
+
+		comboboxmodule.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				new EditDetails("All", comboboxmodule.getSelectedItem().toString());
+				mytable = new MyTableModelEdit(testDetailsListView, excelHeaders);
+				Global.TestCasesIDLst.clear();
+				try {
+					Object[][] tableData = mytable.getdisplayData();
+					Global.tableData = tableData;
+					if (Global.tableData != null) {
+						testcount = Utilities.getUITestCount();
+						TestCasesIDLst = Utilities.getUITestIDList();
+
+					} else {
+						testcount = utilities.getTestCount();
+						Global.TestCasesIDLst.clear();
+					}
+
+				} catch (Exception e1) {
+
+				}
+				if (isdatapresent.equals(true)) {
+				} else {
+					testcount = 0;
+					Global.TestCasesIDLst.clear();
+				}
+
+				table.setModel(mytable);
+				table.setEnabled(false);
+				TableColumnModel colModel = table.getColumnModel();
+				changeColumnsWidth(colModel);
+				System.out.println("TestCasesIDLst list: " + Global.TestCasesIDLst.toString());
+
+				// JLabel lblNewLabel = new JLabel("Select Test Case ID:");
+				// lblNewLabel.setBounds(380, 20, 210, 33);
+				// panelEdit.add(lblNewLabel);
+				// final JComboBox<Object> comboBoxTestCasesID = new
+				// JComboBox<Object>();
+
+				excelTestCaseNameDropdown = Global.TestCasesIDLst;
+				excelTestCaseNameDropdown.add("All");
+				Collections.sort(excelTestCaseNameDropdown);
+
+				comboBoxTestCasesName.setModel(new DefaultComboBoxModel<Object>(excelTestCaseNameDropdown.toArray()));
+				// comboBoxTestCasesName.add("All");
+				comboBoxTestCasesName.setSelectedIndex(0);
+				// comboBoxTestCasesID.setBounds(520, 20, 225, 33);
+				// panelEdit.add(comboBoxTestCasesID);
+
+			}
+
+		});
+
+		// _____________________________________________________________________
+
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setBounds(30, 85, 1300, 555);
 		panelEdit.add(scrollPane1);
