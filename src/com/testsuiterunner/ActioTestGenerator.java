@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +37,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import org.apache.poi.hssf.record.PageBreakRecord.Break;
 
 import com.main.utilitylib.Utilities;
 
@@ -118,10 +121,14 @@ public class ActioTestGenerator extends JFrame {
 
 	// static File file;
 	static Vector actions = new Vector();
+	
 	static Vector parameters = new Vector();
 	private JSeparator separator_1;
 
 	private JSeparator separatorVertical;
+	
+	
+	static Set<String> moduleSet = new HashSet<String>();
 
 	ActioTestGenerator() {
 		initialize();
@@ -260,8 +267,8 @@ public class ActioTestGenerator extends JFrame {
 
 		btnEditTests.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// EditPage.EditButton(self, panelMenu, panelEdit);
-				EditDetails.EditButtonCode(self, panelMenu, panelEdit);
+			EditPage.EditButton(self, panelMenu, panelEdit);
+				//EditDetails.EditButtonCode(self, panelMenu, panelEdit);
 				panelMenu.setVisible(false);
 				panelEdit.setVisible(true);
 
@@ -674,16 +681,16 @@ public class ActioTestGenerator extends JFrame {
 			ArrayList details = new ArrayList();
 			for (int i = 1; i < sheet.getRows(); i++) {
 				Cell cell = sheet.getCell(columnNumber, i);
+				
+				String contents = cell.getContents();
+				if (contents != null && contents.length() != 0 && cell.getContents().equalsIgnoreCase(contents)) {
 
-				String con = cell.getContents();
-				if (con != null && con.length() != 0 && cell.getContents().equalsIgnoreCase(con)) {
-
-					System.out.print(con);
-					System.out.print("|");
+					//System.out.print(con);
+					//System.out.print("|");
 				} else {
 					continue;
 				}
-				actions.add(con);
+				actions.add(contents);
 			}
 			Iterator<String> itr = actions.iterator();
 			while (itr.hasNext()) {
@@ -694,7 +701,63 @@ public class ActioTestGenerator extends JFrame {
 			e.printStackTrace();
 		}
 
-	} // end of fillColumn method
+	} // end of fillCombo  method
+	
+	
+	
+	static void populateTCid(JComboBox combo, File file,String selectedItem ,int columnNumber,JPanel panelEdit) {
+		Workbook workbook = null;
+		//final JComboBox<Object> comboTestID = new JComboBox<Object>();
+		//panelEdit.remove(combo);
+		combo.setBounds(520, 20, 225, 33);
+		panelEdit.add(combo);
+		combo.addItem("");
+		combo.removeAllItems();
+		try {
+			//System.out.println("Selected item is  "+selectedItem);
+			workbook = Workbook.getWorkbook(file);
+			Sheet sheet = workbook.getSheet(0);
+			actions.clear();
+			//System.out.println(sheet.getRows());
+			
+			for (int k= 1; k < sheet.getRows(); k++) {
+			Cell cellp = sheet.getCell(2, k);
+			String conp = cellp.getContents();
+			
+			if(selectedItem.equalsIgnoreCase(conp))
+			{
+			for (int i = 1; i < sheet.getRows(); i++) {
+				Cell cell = sheet.getCell(columnNumber, k);
+				
+				String con = cell.getContents();
+				if (con != null && con.length() != 0 && cell.getContents().equalsIgnoreCase(con)&&selectedItem.equalsIgnoreCase(conp)) 
+				{
+
+					
+					actions.add(con);
+				    break;
+					
+				} else {
+					continue;
+				}
+				
+			}
+			
+			}
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Iterator<String> itr = actions.iterator();
+		while (itr.hasNext()) {
+			String it =itr.next();
+			combo.addItem(it);
+			//System.out.println("sk ite  "+it);
+		}
+
+	} // end of fillCombo for tcid method
+
 
 	static void populateTable(int row) {
 		try {
