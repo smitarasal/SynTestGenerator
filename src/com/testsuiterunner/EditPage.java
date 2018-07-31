@@ -100,12 +100,16 @@ public class EditPage {
 	
 	private static JTable Table = new JTable();
 	static DefaultTableModel model112 = new DefaultTableModel(mastersheetData,headers);
-	private static JTable masterTable = new JTable();
+
 	private static JScrollPane scrollPaneMaster = new JScrollPane(Table);
-	static DefaultTableModel masterModel = new DefaultTableModel();
-	static Object[] masterColumns = { "IsEnabled", "Test Suite", "Module", "Priority", "Test ID", "Test Name",
-			"	Test Data", "Test Step Description", "Actions", "Platform" };
+	
 	static Object[][] masterData = new Object[][] { { "", "", "", "", "", "", "", "", "", "" } };
+	
+	static List<String> list = new ArrayList<String>();
+   
+	
+	  
+	  
 	
 	
 	private ArrayList<String> parametersCol;
@@ -160,8 +164,7 @@ public class EditPage {
 		
 		panelEdit.setLayout(null);
 		panelEdit.setVisible(false);
-		
-		
+
 		
 		lblUpdate = new JLabel("Updated The TestCase Successfully :");
 		lblUpdate.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -332,6 +335,18 @@ public class EditPage {
 		scrollPaneMaster.setBounds(30, 85, 1300, 555);
 		scrollPaneMaster.setVisible(false);
 		
+		
+			list.add("IsEnabled");
+			list.add("Test Suite");
+			list.add("Module");
+			list.add("Priority");
+			list.add("Test ID");
+			list.add("Test Name");
+			list.add("Test Data");
+			list.add("Test Step Description");
+			list.add("Actions");
+			list.add("Platform");
+		
 		JButton btnSearchSelected = new JButton("Search Selected");
 		btnSearchSelected.setBounds(1100, 20, 170, 33);
 		panelEdit.add(btnSearchSelected);		
@@ -357,10 +372,14 @@ public class EditPage {
 					String Str2="";
 					deletedvalue.clear();
 					// deletedvalue="";
-					for (int i = 0; i < sheet.getColumns(); i++) {
+				
+					/*for (int i = 0; i < sheet.getColumns(); i++) {
 					Cell cell1 = sheet.getCell(i, 0);
-					headers.add(cell1.getContents());
-					}
+					//headers.add(cell1.getContents());
+					
+					}*/
+					headers.addAll(list);
+					
 					mastersheetData.clear();
 					for (int j = 1; j < sheet.getRows(); j++) {
 					Vector d = new Vector();
@@ -549,32 +568,18 @@ public class EditPage {
 	
 			
 			
-			comboActions.setSelectedIndex(0);
-			comboboxmodule.setSelectedIndex(0);
-		
-			textDescription.setText("");
+	
+			lblUpdate.setVisible(true);
 			
-			//clear the table
-			DefaultTableModel model2 = (DefaultTableModel) Table.getModel();
-			while (model2.getRowCount() > 0) {
-				for (int i = 0; i < model2.getRowCount(); i++) {
-					model2.removeRow(i);
-				}
-				
-				DefaultTableModel model = (DefaultTableModel) parameterTable.getModel();
-				while (model.getRowCount() > 0) {
-					for (int i = 0; i < model.getRowCount(); i++) {
-						model.removeRow(i);
-					}
-				}
-				
-				lblUpdate.setVisible(true);
-			}
+			
+			//clear the table			
+						
 			}
 			
 			
 			
 		});
+		
 		btnUpdate.setBounds(800, 850, 170, 33);
 		panelEdit.add(btnUpdate);
 		
@@ -636,6 +641,7 @@ public class EditPage {
 					for (int j = 0; j < nCol; j += 2) {
 
 						mapValues.put(paramodel.getValueAt(i, j).toString(), paramodel.getValueAt(i, j + 1).toString());
+						System.out.println("mapvalues " +mapValues);
 
 					}
 
