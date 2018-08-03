@@ -105,7 +105,7 @@ public class EditPage {
 	
 	static Object[][] masterData = new Object[][] { { "", "", "", "", "", "", "", "", "", "" } };
 	
-	static List<String> list = new ArrayList<String>();
+	
    
 	
 	  
@@ -171,7 +171,7 @@ public class EditPage {
 		lblUpdate.setForeground(Color.blue);
 		lblUpdate.setVisible(false);
 		panelEdit.add(lblUpdate);
-		lblUpdate.setBounds(1099, 730, 286, 87);
+		lblUpdate.setBounds(50, 50, 286, 87);
 		
 		JLabel lblModuleLabel = new JLabel("Select Module :");
 		lblModuleLabel.setBounds(50, 20, 225, 33);
@@ -208,9 +208,12 @@ public class EditPage {
 				}
 				actions.add(con);
 				moduleSet.addAll(actions);
-				String[] moduleList = new String[moduleSet.size()];
-				moduleList = moduleSet.toArray(new String[moduleSet.size()]);
-				Arrays.sort(moduleList);
+			//	String[] moduleList = new String[moduleSet.size()];
+				  List<String> moduleList = new ArrayList<String>(moduleSet);
+				  Collections.sort(moduleList);
+			//	moduleList = moduleSet.toArray(new String[moduleSet.size()]);
+			
+				//Arrays.sort(moduleList);
 			}
 			Iterator<String> itr = moduleSet.iterator();
 			
@@ -248,9 +251,9 @@ public class EditPage {
 				e2.printStackTrace();
 			}
 
-			JLabel lblNewLabel = new JLabel("Select Test Case Name:");
-			lblNewLabel.setBounds(380, 20, 210, 33);
-			panelEdit.add(lblNewLabel);
+			JLabel lblTestId = new JLabel("Select TestCase ID");
+			lblTestId.setBounds(380, 20, 210, 33);
+			panelEdit.add(lblTestId);
 			ActioTestGenerator.populateTCid(comboTestID, testCaseFile,selectedItem ,4, panelEdit);
 			
 			}
@@ -261,11 +264,11 @@ public class EditPage {
 				
 		
 		JLabel lblActions = new JLabel("Select Actions :");
-		lblActions.setBounds(1400, 40, 190, 33);
+		lblActions.setBounds(1100, 20, 190, 33);
 		panelEdit.add(lblActions);
 		final JComboBox<Object> comboActions = new JComboBox<Object>();
 		comboActions.addItem("");
-		comboActions.setBounds(1600, 40, 200, 33);
+		comboActions.setBounds(1250, 20, 200, 33);
 		panelEdit.add(comboActions);
 	
 		columnNames = new String[] { "Parameter", "	Parameter value" };
@@ -302,7 +305,7 @@ public class EditPage {
 
 		scrollPaneParameters = new JScrollPane(parameterTable);
 		panelEdit.add(scrollPaneParameters, BorderLayout.CENTER);
-		scrollPaneParameters.setBounds(1400, 256, 349, 324);
+		scrollPaneParameters.setBounds(1100, 208, 349, 315);
 		
 		
 	
@@ -332,25 +335,22 @@ public class EditPage {
 		
 		panelEdit.add(scrollPaneMaster, BorderLayout.CENTER);
 		
-		scrollPaneMaster.setBounds(30, 85, 1300, 555);
+		//scrollPaneMaster.setBounds(30, 100, 1000, 500);
+		scrollPaneMaster.setBounds(30, 208, 1020, 315);
 		scrollPaneMaster.setVisible(false);
 		
 		
-			list.add("IsEnabled");
-			list.add("Test Suite");
-			list.add("Module");
-			list.add("Priority");
-			list.add("Test ID");
-			list.add("Test Name");
-			list.add("Test Data");
-			list.add("Test Step Description");
-			list.add("Actions");
-			list.add("Platform");
+			
+			
+			
+			
 		
 		JButton btnSearchSelected = new JButton("Search Selected");
-		btnSearchSelected.setBounds(1100, 20, 170, 33);
+		btnSearchSelected.setBounds(800, 20, 170, 33);
 		panelEdit.add(btnSearchSelected);		
 	      
+		
+		
 	
 		btnSearchSelected.addActionListener(new ActionListener() {
 	
@@ -358,7 +358,21 @@ public class EditPage {
 			public void actionPerformed(ActionEvent e) {
 				
 				
+				
+					
 				scrollPaneMaster.setVisible(true);
+				List<String> list = new ArrayList<String>();
+				list.add("IsEnabled");
+				list.add("Test Suite");
+				list.add("Module");
+				list.add("Priority");
+				list.add("Test ID");
+				list.add("Test Name");
+				list.add("Test Data");
+				list.add("Test Step Description");
+				list.add("Actions");
+				list.add("Platform");
+				
 				
 				try {
 					int flag=0;
@@ -423,15 +437,30 @@ public class EditPage {
 				
 				Table.setModel(model112);
 				Table.setAutoCreateRowSorter(true);
-				model112 = new DefaultTableModel(mastersheetData, headers);
+				model112 = new DefaultTableModel(mastersheetData, headers){
+					public boolean isCellEditable(int row, int col) {
+						if (col == 4 || col == 7 ||col==8) {
+						           
+						            return false;
+						        } else {
+						        	 return true;
+						        }       
+					}
+				
+
+				
+			
+				};
 				Table.setModel(model112);
+				
 				TableColumnModel colModel = Table.getColumnModel();
 				changeColumnsWidth(colModel);
 				
+				lblUpdate.setVisible(false);
 				
+			
+			
 			}
-			
-			
 			
 		});//End of Search.
 		
@@ -446,12 +475,31 @@ public class EditPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				
 				lblUpdate.setVisible(false);
 				panelEdit.setVisible(false);
 				panelMenu.setVisible(true);
+				comboActions.setSelectedIndex(0);
+				comboboxmodule.setSelectedIndex(0);
+				
+				DefaultTableModel model = (DefaultTableModel) parameterTable.getModel();
+				while (model.getRowCount() > 0) {
+					for (int i = 0; i < model.getRowCount(); i++) {
+						model.removeRow(i);
+					}
+				 }
+				DefaultTableModel modelnew = new DefaultTableModel();
+				Table.setModel(modelnew);
+				//Table.getModel();
+				while (modelnew.getRowCount() > 0) {
+					for (int i = 0; i < modelnew.getRowCount(); i++) {
+						modelnew.removeRow(i);
+					}
+				}
+				
 			}
 		});
-		btnBackToMain.setBounds(101, 850, 170, 33);
+		btnBackToMain.setBounds(101, 600, 170, 33);
 		panelEdit.add(btnBackToMain);
 		
 		
@@ -580,14 +628,14 @@ public class EditPage {
 			
 		});
 		
-		btnUpdate.setBounds(800, 850, 170, 33);
+		btnUpdate.setBounds(400, 600, 170, 33);
 		panelEdit.add(btnUpdate);
 		
 		
 		//delete step will delete a particular row that is selected from the jtable.
 		JButton btnDeleteStep= new JButton("Delete Step");
 		panelEdit.add(btnDeleteStep);
-		btnDeleteStep.setBounds(1600, 850, 170, 33);
+		btnDeleteStep.setBounds(1300, 600, 170, 33);
 		btnDeleteStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel deletemodel = new DefaultTableModel();
@@ -602,17 +650,17 @@ public class EditPage {
 		
 		textDescription = new JTextField();
 		panelEdit.add(textDescription);
-		textDescription.setBounds(1600, 100, 260, 33);
+		textDescription.setBounds(1250, 100, 260, 33);
 		
 		
 		lblTestDescription = new JLabel("Enter TestDescription:");
 		panelEdit.add(lblTestDescription);
-		lblTestDescription.setBounds(1400, 100, 190, 33);
+		lblTestDescription.setBounds(1100, 100, 190, 33);
 	
 		//add step button is used add the action and description from the actions combobox and textdecription fields respectivley
 		btnAddStep = new JButton("Add Step");
 		panelEdit.add(btnAddStep);
-		btnAddStep.setBounds(1400, 850, 170, 33);
+		btnAddStep.setBounds(1100, 600, 170, 33);
 		Object[] row = new Object[10];
 			
 		btnAddStep.addActionListener(new ActionListener() {
@@ -646,6 +694,8 @@ public class EditPage {
 					}
 
 				}
+				
+				textDescription.setText("");
 
 			}
 
