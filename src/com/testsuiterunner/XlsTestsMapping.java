@@ -27,7 +27,8 @@ public class XlsTestsMapping {
 	/*
 	 * UI related additional variables
 	 */
-	public static String[] excelHeader = null, excelModules = null;
+	public String[] excelHeader = null;
+	public static String[] excelModules = null;
 	public static int count;
 
 	/*
