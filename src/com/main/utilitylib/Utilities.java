@@ -16,13 +16,7 @@ import java.util.Properties;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 public class Utilities {
 	Properties prop = new Properties();
@@ -69,17 +63,15 @@ public class Utilities {
 		return testcount;
 	}
 
-
 	// Get main config
 	public String getConfigFile(String key) throws IOException {
 		key = "project_conf_file_path";
 		input = new FileInputStream("./src/com/conf/env/config.properties");
 		prop.load(input);
-		//System.out.println(prop.getProperty(key));
+		// System.out.println(prop.getProperty(key));
 		return prop.getProperty(key).trim();
-	
-	}
 
+	}
 
 	// Get project specific config Properties
 	public String getProperties(String key) throws IOException {
@@ -108,62 +100,15 @@ public class Utilities {
 
 		return prop.getProperty(key);
 	}
-	
-	
 
-	///new shradha
-	
-		public File getExcelFile(String key) throws FileNotFoundException, IOException{
-			
-			input = new FileInputStream(getConfigFile("/com/conf/web/workiq/config.properties"));
-			prop.load(input);
-			 File excelFile = new File(prop.getProperty(key));
-			 return excelFile;
-		}
+	/// new shradha
 
+	public File getExcelFile(String key) throws FileNotFoundException, IOException {
 
-	// Explicit Wait
-	public void waitUntil(ExpectedCondition<WebElement> expectedCondition, RemoteWebDriver driver, int time) {
-		WebDriverWait wait = new WebDriverWait(driver, time);
-		wait.until(expectedCondition);
-	}
-
-	// wait until an element get invisible
-	public void waitUntilInvisibleElement(ExpectedCondition<Boolean> invisibilityOfElementLocated,
-			RemoteWebDriver driver, int time) {
-		WebDriverWait wait = new WebDriverWait(driver, time);
-		wait.until(invisibilityOfElementLocated);
-	}
-
-	// click event
-	public void click(RemoteWebDriver driver, By by) throws IOException, InterruptedException {
-		findElement(driver, by).click();
-		Thread.sleep(1000);
-	}
-
-	// send key event
-	public void sendKeys(RemoteWebDriver driver, By by, String key) throws IOException {
-		findElement(driver, by).sendKeys(key);
-	}
-
-	// clear text field event
-	public void clear(RemoteWebDriver driver, By by, String key) throws IOException {
-		findElement(driver, by).clear();
-	}
-
-	// find element
-	public WebElement findElement(RemoteWebDriver driver, By by) throws IOException {
-		WebElement element = null;
-		try {
-			element = driver.findElement(by);
-		} catch (Exception | AssertionError e) {
-			Global.testresult = false;
-			log.logError(logger, e.getMessage() + "\n" + "#XX# TEST FAILED!!! #XX#");
-			log.logSummary(getTimestamp() + "	ERROR: " + e.getMessage() + "\n" + getTimestamp()
-					+ "	#XX# TEST FAILED!!! #XX#");
-			Assert.fail(e.getMessage());
-		}
-		return element;
+		input = new FileInputStream(getConfigFile("/com/conf/web/workiq/config.properties"));
+		prop.load(input);
+		File excelFile = new File(prop.getProperty(key));
+		return excelFile;
 	}
 
 	// get Time stamp
