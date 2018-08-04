@@ -35,12 +35,12 @@ public class Utilities {
 
 	public void getXlsTestsMapping(String testfile) throws IOException {
 		// Read test input file
-		File file = new File(testfile);
+
 		tests = new FileInputStream(testfile);
 		wb = new HSSFWorkbook(tests);
 		// Get tests sheet
 		Global.tests_sheet = wb.getSheetAt(0);
-		Global.TestCasesIDLst = new ArrayList();
+		Global.TestCasesIDLst = new ArrayList<String>();
 	}
 
 	// Returns rows from tests input file
@@ -163,14 +163,14 @@ public class Utilities {
 	}
 
 	public static List<String> getUITestIDList() {
-		int testCount = 0;
+
 		Global.TestCasesIDLst.clear();
 		for (int row = 0; row < Global.tableData.length; row++) {
 			for (int col = 0; col < Global.tableData[row].length; col++) {
 				try {
 					if (!Global.tableData[row][4].equals(null) && col == 4 && !Global.tableData[row][4].equals("")) {
 						Global.TestCasesIDLst.add(Global.tableData[row][4].toString().trim());
-						testCount++;
+
 					}
 				} catch (NullPointerException e) {
 					/*
