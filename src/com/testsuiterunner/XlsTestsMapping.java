@@ -13,7 +13,6 @@ import org.apache.poi.ss.usermodel.Row;
 import com.main.exceptions.NoParameterFileException;
 import com.main.exceptions.NoSuchApplicationException;
 import com.main.exceptions.NoSuchFunctionException;
-import com.main.utilitylib.GetClassDetails;
 import com.main.utilitylib.Global;
 import com.main.utilitylib.LoggerUtilities;
 import com.main.utilitylib.Utilities;
@@ -21,7 +20,7 @@ import com.main.utilitylib.Utilities;
 public class XlsTestsMapping {
 	Iterator<Row> tests_rowIt;
 	LoggerUtilities log = new LoggerUtilities();
-	public GetClassDetails classDetails = new GetClassDetails();
+
 	Object objAction;
 	Utilities serve = new Utilities();
 
