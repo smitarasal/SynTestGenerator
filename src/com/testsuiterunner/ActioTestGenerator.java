@@ -13,9 +13,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -83,8 +85,9 @@ public class ActioTestGenerator extends JFrame {
 	static JLabel lblModule;
 	static JLabel lblSave;
 
-	static JComboBox comboActions;
+	private	static JComboBox comboActions;
 	static JComboBox comboTestSuite;
+	private JTextField textFieldOtherSuiteName;
 	static JComboBox comboIsEnabled;
 	static JComboBox comboPriority;
 	static JComboBox comboPlatform;
@@ -128,7 +131,8 @@ public class ActioTestGenerator extends JFrame {
 	private JSeparator separatorVertical;
 	
 	
-	static Set<String> moduleSet = new HashSet<String>();
+	static Set<String> TestSuiteSet = new HashSet<String>();
+	static Set<String> PlatformSet = new HashSet<String>();
 
 	ActioTestGenerator() {
 		initialize();
@@ -139,6 +143,8 @@ public class ActioTestGenerator extends JFrame {
 		mainFrame = new JFrame();
 		// mainFrame.setSize(1000, 1000);
 
+		
+		
 		btnCreateTests = new JButton("Create Tests");
 		btnEditTests = new JButton(" Edit Tests");
 		btnViewTests = new JButton("View Tests");
@@ -167,11 +173,76 @@ public class ActioTestGenerator extends JFrame {
 		String[] isEnabledStatus = new String[] { "", "Y", "N" };
 		JComboBox<Object> comboIsEnabled = new JComboBox<Object>(isEnabledStatus);
 
-		String[] testSuites = new String[] { "", "Smoke Suite", "Sanity Suite", "Regression" };
-		JComboBox<Object> comboTestSuite = new JComboBox<Object>(testSuites);
+		//String[] testSuites = new String[] { "", "Smoke Suite", "Sanity Suite", "Regression" };
+		JComboBox<Object> comboTestSuite = new JComboBox<Object>();
+		comboTestSuite.addItem("");
+		comboTestSuite.addItem("Add new");
+		
+		
+		//populating the suites values uniquely from excel sheet.
+				Workbook workbook = null;
+				 Vector actions = new Vector();
+				try {
+					testCaseFile = utilities.getExcelFile("testfile");
+					workbook = Workbook.getWorkbook(testCaseFile);
+					Sheet sheet = workbook.getSheet(0);
+					actions.clear();
+					//ArrayList details = new ArrayList();
+					for (int i = 1; i < sheet.getRows(); i++) {
+						Cell cell = sheet.getCell(1, i);
+						
+						
+						String con = cell.getContents();
+						if (con != null && con.length() != 0 && cell.getContents().equalsIgnoreCase(con)) {
+
+							
+						} else {
+							continue;
+						}
+						actions.add(con);
+						TestSuiteSet.addAll(actions);
+				
+						  List<String> testsuitelist = new ArrayList<String>(TestSuiteSet);
+						  Collections.sort(testsuitelist);
+				
+					}
+					Iterator<String> itr = TestSuiteSet.iterator();
+					
+					
+					while (itr.hasNext()) {
+						
+						comboTestSuite.addItem(itr.next());
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}//End of populating the testsuites values uniquely from excel sheet.
+		
+				comboTestSuite.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						//
+						// Get the source of the component, which is our combo
+						// box.
+						//
+						JComboBox comboBox = (JComboBox) event.getSource();
+
+						Object selected = comboBox.getSelectedItem();
+						if (selected.toString().equals("Add new"))
+							textFieldOtherSuiteName.setVisible(true);
+						else if (!selected.toString().equals("Add new"))
+							textFieldOtherSuiteName.setVisible(false);
+
+					}
+				});
+		
+		
+		
+		
 
 		String[] platforms = new String[] { "", "Web", "IOS", "Android", "IOSBrowser", "API", "Android Browser" };
 		JComboBox<Object> comboPlatform = new JComboBox<Object>(platforms);
+		
+		
 
 		textTestCaseID = new JTextField();
 		textDescription = new JTextField();
@@ -179,6 +250,7 @@ public class ActioTestGenerator extends JFrame {
 		textModule = new JTextField();
 		textTestData = new JTextField();
 		textTestSuite = new JTextField();
+		textFieldOtherSuiteName = new JTextField();
 		btnCreateSaveTestButton = new JButton("Create and Save Test");
 		btnBackToMain = new JButton("Back to Main Screen");
 		btnDeleteStep = new JButton("Delete Step");
@@ -218,6 +290,7 @@ public class ActioTestGenerator extends JFrame {
 
 		masterModel.setColumnIdentifiers(masterColumns);
 		masterTable.setModel(masterModel);
+		
 
 		// ***************************************************************************************
 		mainFrame.setTitle("Actio - Test Generator ");
@@ -228,6 +301,9 @@ public class ActioTestGenerator extends JFrame {
 		mainFrame.getContentPane().setLayout(new CardLayout(0, 0));
 		ImageIcon img = new ImageIcon("syn-icon.png");
 		mainFrame.setIconImage(img.getImage());
+		
+		
+		
 		JPanel panelMenu = new JPanel();
 		JPanel panelCreateTests = new JPanel();
 		JPanel panelViewTests = new JPanel();
@@ -271,6 +347,7 @@ public class ActioTestGenerator extends JFrame {
 				//EditDetails.EditButtonCode(self, panelMenu, panelEdit);
 				panelMenu.setVisible(false);
 				panelEdit.setVisible(true);
+			
 
 			}
 		});
@@ -315,26 +392,27 @@ public class ActioTestGenerator extends JFrame {
 		panelCreateTests.add(scrollPaneMaster, BorderLayout.CENTER);
 		lblSave.setVisible(false);
 		panelCreateTests.add(lblSave);
+		panelCreateTests.add(textFieldOtherSuiteName);
 
 		lblisEnabled.setBounds(9, 30, 86, 33);
 		lblActions.setBounds(9, 242, 86, 33);
-		lblModule.setBounds(731, 88, 63, 33);
-		lblTestCaseID.setBounds(347, 88, 143, 33);
-		lblTestCaseName.setBounds(1047, 39, 164, 14);
-		lblTestData.setBounds(1047, 88, 148, 33);
+		lblModule.setBounds(414, 88, 86, 33);
+		lblTestCaseID.setBounds(9, 88, 143, 33);
+		lblTestCaseName.setBounds(9, 159, 164, 14);
+		lblTestData.setBounds(414, 150, 148, 33);
 		lblTestDescription.setBounds(326, 242, 143, 33);
 		lblTestSuite.setBounds(731, 30, 72, 33);
-		lblPriority.setBounds(347, 30, 86, 33);
-		lblPlatform.setBounds(9, 88, 102, 33);
+		lblPriority.setBounds(414, 30, 86, 33);
+		lblPlatform.setBounds(731, 88, 102, 33);
 		lblTableTitle.setBounds(29, 312, 361, 25);
 		lblSave.setBounds(1099, 730, 286, 87);
 
-		comboIsEnabled.setBounds(123, 30, 148, 33);
+		comboIsEnabled.setBounds(140, 30, 148, 33);
 		comboActions.setBounds(123, 242, 148, 33);
-		textModule.setBounds(842, 88, 171, 33);
-		textTestCaseID.setBounds(500, 88, 143, 33);
-		textTestCaseName.setBounds(1221, 30, 263, 33);
-		textTestData.setBounds(1221, 88, 263, 33);
+		textModule.setBounds(559, 88, 116, 33);
+		textTestCaseID.setBounds(140, 88, 148, 33);
+		textTestCaseName.setBounds(140, 150, 250, 33);
+		textTestData.setBounds(558, 150, 245, 33);
 		textDescription.setBounds(473, 242, 439, 33);
 
 		btnCreateTests.setBounds(565, 269, 116, 35);
@@ -343,10 +421,11 @@ public class ActioTestGenerator extends JFrame {
 		btnAddStep.setBounds(1097, 612, 116, 35);
 		btnDeleteStep.setBounds(1263, 612, 116, 35);
 
-		comboTestSuite.setBounds(842, 30, 171, 33);
+		comboTestSuite.setBounds(842, 30, 148, 33);
+		textFieldOtherSuiteName.setBounds(1000, 30, 148, 33);
 
-		comboPriority.setBounds(500, 30, 143, 33);
-		comboPlatform.setBounds(123, 88, 148, 33);
+		comboPriority.setBounds(558, 30, 102, 33);
+		comboPlatform.setBounds(842, 88, 148, 33);
 
 		btnCreateSaveTestButton.setBounds(579, 699, 200, 37);
 		btnBackToMain.setBounds(206, 696, 205, 42);
@@ -354,7 +433,7 @@ public class ActioTestGenerator extends JFrame {
 		scrollPaneMaster.setBounds(29, 348, 938, 315);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 207, 1850, 2);
+		separator.setBounds(9, 218, 1850, 2);
 		panelCreateTests.add(separator);
 
 		separatorVertical = new JSeparator();
@@ -465,6 +544,7 @@ public class ActioTestGenerator extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				panelCreateTests.setVisible(true);
 				panelMenu.setVisible(false);
+				textFieldOtherSuiteName.setVisible(false);
 			}
 		});
 
@@ -487,6 +567,7 @@ public class ActioTestGenerator extends JFrame {
 				comboIsEnabled.setEnabled(true);
 				comboPriority.setEnabled(true);
 				comboPlatform.setEnabled(true);
+				comboTestSuite.setEnabled(true);
 				boolean b = true;
 				textModule.setEditable(b);
 				textTestCaseID.setEditable(b);
@@ -499,6 +580,7 @@ public class ActioTestGenerator extends JFrame {
 				masterTable.setEnabled(b);
 
 				comboActions.setSelectedIndex(0);
+				comboTestSuite.setSelectedIndex(0);
 				comboIsEnabled.setSelectedIndex(0);
 				comboPriority.setSelectedIndex(0);
 				comboPlatform.setSelectedIndex(0);
@@ -612,7 +694,11 @@ public class ActioTestGenerator extends JFrame {
 
 						if (masterTable.getRowCount() == 0) {
 							row[0] = comboIsEnabled.getSelectedItem();
+							if(comboTestSuite.getSelectedItem().toString().equalsIgnoreCase("Add New")){
+								row[1] = textFieldOtherSuiteName.getText();
+							}else{
 							row[1] = comboTestSuite.getSelectedItem();
+							}
 							row[2] = textModule.getText();
 							row[3] = comboPriority.getSelectedItem();
 							row[4] = textTestCaseID.getText();
@@ -637,6 +723,7 @@ public class ActioTestGenerator extends JFrame {
 							masterModel.addRow(row);
 
 						}
+						
 
 						int nRow = model.getRowCount(), nCol = model.getColumnCount();
 
@@ -652,12 +739,14 @@ public class ActioTestGenerator extends JFrame {
 						comboIsEnabled.setEnabled(false);
 						comboPriority.setEnabled(false);
 						comboPlatform.setEnabled(false);
+						comboTestSuite.setEnabled(false);
 						boolean b = false;
 						textModule.setEditable(b);
 						textTestCaseID.setEditable(b);
 						textTestCaseName.setEditable(b);
 						textTestData.setEditable(b);
 						textTestSuite.setEditable(b);
+						textFieldOtherSuiteName.setEditable(b);
 					}
 				}
 			}
@@ -666,10 +755,7 @@ public class ActioTestGenerator extends JFrame {
 
 	}
 
-	public void checkFieldsFull() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	static void populateActions(JComboBox combo, File file, int columnNumber) {
 		Workbook workbook = null;

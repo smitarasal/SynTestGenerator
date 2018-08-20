@@ -46,6 +46,7 @@ import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 import com.main.utilitylib.Global;
 import com.main.utilitylib.Utilities;
@@ -76,7 +77,7 @@ public class EditPage {
 	static File parameterFile = null;
 	static File actionLibraryFile = null;
 	
-	static JComboBox comboActions;
+	private static JComboBox comboActions;
 	static JComboBox comboboxmodule;
 	
 	static JLabel lblTestSuite;
@@ -90,9 +91,9 @@ public class EditPage {
 	
 	
 	 static JTable parameterTable;
-	static JScrollPane scrollPaneParameters;
+		static JScrollPane scrollPaneParameters;
 	static String[] columnNames = { "Parameters", "Values" };
-	static DefaultTableModel paramodel = new DefaultTableModel();
+	public	static DefaultTableModel paramodel = new DefaultTableModel();
 	
 	
 	static Vector mastersheetData = new Vector();
@@ -129,6 +130,7 @@ public class EditPage {
 	static String idvalue="";
 	 //static String deletedvalue="";
 	static  ArrayList<Integer> deletedvalue = new ArrayList<Integer>();
+	static  ArrayList<String> deletedvalue1 = new ArrayList<String>();
 	
 	static JLabel lblUpdate;
 
@@ -194,7 +196,7 @@ public class EditPage {
 			workbook = Workbook.getWorkbook(testCaseFile);
 			Sheet sheet = workbook.getSheet(0);
 			actions.clear();
-			ArrayList details = new ArrayList();
+			//ArrayList details = new ArrayList();
 			for (int i = 1; i < sheet.getRows(); i++) {
 				Cell cell = sheet.getCell(2, i);
 				
@@ -260,14 +262,54 @@ public class EditPage {
 		}); //end of populating the TC_IDs
 		
 			
+			
+		JButton btnBackToMain = new JButton("Back To Main Screen");
+		btnBackToMain.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				
+				
+				lblUpdate.setVisible(false);
+				panelEdit.setVisible(false);
+				panelMenu.setVisible(true);
+				comboActions.setSelectedIndex(0);
+				comboboxmodule.setSelectedIndex(0);
+				
+				
+				
+				DefaultTableModel model = (DefaultTableModel) parameterTable.getModel();
+				while (model.getRowCount() > 0) {
+					for (int i = 0; i < model.getRowCount(); i++) {
+						model.removeRow(i);
+					}
+				}
+				
+				DefaultTableModel modelnew = new DefaultTableModel();
+				Table.setModel(modelnew);
+				//Table.getModel();
+				while (modelnew.getRowCount() > 0) {
+					for (int i = 0; i < modelnew.getRowCount(); i++) {
+						modelnew.removeRow(i);
+					}
+				}
+				
+			}
+		});
+		btnBackToMain.setBounds(101, 600, 170, 33);
+		panelEdit.add(btnBackToMain);
+		
+		
+		
+		
 				
 		
 		JLabel lblActions = new JLabel("Select Actions :");
 		lblActions.setBounds(1100, 20, 190, 33);
 		panelEdit.add(lblActions);
-		final JComboBox<Object> comboActions = new JComboBox<Object>();
+		//final JComboBox<Object> comboActions = new JComboBox<Object>();
+		comboActions = new JComboBox();
 		comboActions.addItem("");
+		//comboActions.addItem("");
 		comboActions.setBounds(1250, 20, 200, 33);
 		panelEdit.add(comboActions);
 	
@@ -470,38 +512,7 @@ public class EditPage {
 		
 	
 
-		JButton btnBackToMain = new JButton("Back To Main Screen");
-		btnBackToMain.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				lblUpdate.setVisible(false);
-				panelEdit.setVisible(false);
-				panelMenu.setVisible(true);
-				comboActions.setSelectedIndex(0);
-				comboboxmodule.setSelectedIndex(0);
-				
-				DefaultTableModel model = (DefaultTableModel) parameterTable.getModel();
-				while (model.getRowCount() > 0) {
-					for (int i = 0; i < model.getRowCount(); i++) {
-						model.removeRow(i);
-					}
-				 }
-				DefaultTableModel modelnew = new DefaultTableModel();
-				Table.setModel(modelnew);
-				//Table.getModel();
-				while (modelnew.getRowCount() > 0) {
-					for (int i = 0; i < modelnew.getRowCount(); i++) {
-						modelnew.removeRow(i);
-					}
-				}
-				
-			}
-		});
-		btnBackToMain.setBounds(101, 600, 170, 33);
-		panelEdit.add(btnBackToMain);
-		
+	
 		
 		
 		
@@ -532,33 +543,24 @@ public class EditPage {
 				copy.write();
 				copy.close();
 				workbook.close();
-				parameterFile = utilities.getExcelFile("parameterFile");
-				Workbook workbook2 = Workbook.getWorkbook(parameterFile);
-				WritableWorkbook copy2 = Workbook.createWorkbook(parameterFile, workbook2);
-				WritableSheet sheet2 = copy2.getSheet(0);
-
-				Set<String> keys = mapValues.keySet();
-				Label cell;
-				for (String key : keys) {
-					int size1 = sheet2.getRows();
-
-					cell = new Label(0, size1, idvalue);
-					sheet2.addCell(cell);
-					cell = new Label(1, size1, key);
-					sheet2.addCell(cell);
-					cell = new Label(2, size1, mapValues.get(key));
-					sheet2.addCell(cell);
-
-				}
-				copy2.write();
-				copy2.close();
-				workbook2.close();
-				mapValues.clear();
+				
+				
+				
 
 			} catch (Exception e1) {
 
 				e1.printStackTrace();
 			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			// for removing the row from testeb.xls     .
 			Workbook workbook = null;
@@ -696,6 +698,185 @@ public class EditPage {
 				}
 				
 				textDescription.setText("");
+				
+				
+				
+				
+				
+				
+				
+				//ffor removing parameters
+				// for removing the row from testeb.xls     .
+							Workbook workbook1 = null;
+							
+								try {
+									workbook1 = Workbook.getWorkbook(parameterFile);
+								} catch (BiffException e3) {
+									// TODO Auto-generated catch block
+									e3.printStackTrace();
+								} catch (IOException e3) {
+									// TODO Auto-generated catch block
+									e3.printStackTrace();
+								}
+							
+							WritableWorkbook copy1 = null;
+							try {
+								copy1 = Workbook.createWorkbook(parameterFile, workbook1);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						
+							
+							WritableSheet sheet3 = copy1.getSheet(0);
+						
+							
+							
+							//
+							HashSet<String> uniqueValues2 = new HashSet<>(deletedvalue1);
+							Iterator<String> it1 = uniqueValues2.iterator();
+						     while(it1.hasNext()){
+						    	 System.out.println("ak delete valuese   "+it1.next() );
+						     }
+							
+							
+							HashSet<String> uniqueValues1 = new HashSet<>(deletedvalue1);
+							Iterator<String> it = uniqueValues1.iterator();
+						     while(it.hasNext()){
+						    	 String buff=it.next();
+						    	// System.out.println("ak delete valuese   "+it.next() );
+						       
+						     
+							for (int b = 0; b < sheet3.getRows(); b++) {
+								//size = sheet3.getRows();
+								//Cell cell = sheet3.getCell(0, b);
+								Cell cell = sheet3.getCell(0,b);
+							
+							
+								System.out.println("ak col 1   "+cell.getContents() );
+								
+							//	Cell cellc1 = sheet3.getCell(1, b);
+								Cell cellc1 = sheet3.getCell(1,b);
+								System.out.println("ak col 2   "+cellc1.getContents() );
+								if(idvalue.equalsIgnoreCase(cell.getContents())&& cellc1.getContents().equalsIgnoreCase(buff))
+								{
+									sheet3.removeRow(b);
+								}
+							
+								
+							}
+						     }
+							
+							
+							
+							try {
+								copy1.write();
+						
+							
+							
+							} catch (IOException e2) {
+								// TODO Auto-generated catch block
+								e2.printStackTrace();
+							}
+							workbook1.close();
+							try {
+								copy1.close();
+							} catch (WriteException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}//end of code for removing the row
+					
+				
+				
+				
+				
+				// end of paramerter delete values
+				
+				
+				
+				
+				
+				
+				
+				try {
+					parameterFile = utilities.getExcelFile("parameterFile");
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Workbook workbook2 = null;
+				try {
+					workbook2 = Workbook.getWorkbook(parameterFile);
+				} catch (BiffException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				WritableWorkbook copy2 = null;
+				try {
+					copy2 = Workbook.createWorkbook(parameterFile, workbook2);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				WritableSheet sheet2 = copy2.getSheet(0);
+
+				Set<String> keys = mapValues.keySet();
+				Label cell;
+				for (String key : keys) {
+					int size1 = sheet2.getRows();
+
+					cell = new Label(0, size1, idvalue);
+					try {
+						sheet2.addCell(cell);
+					} catch (WriteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					cell = new Label(1, size1, key);
+					try {
+						sheet2.addCell(cell);
+					} catch (RowsExceededException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (WriteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					cell = new Label(2, size1, mapValues.get(key));
+					try {
+						sheet2.addCell(cell);
+					} catch (RowsExceededException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (WriteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				}
+				try {
+					copy2.write();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					copy2.close();
+				} catch (WriteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				workbook2.close();
+				mapValues.clear();
 
 			}
 
@@ -725,6 +906,7 @@ public class EditPage {
 
 			actionLibraryFile = utilities.getExcelFile("actionLibraryFile");
 			Workbook workbook = null;
+			deletedvalue1.clear();
 			ArrayList<String> temp = new ArrayList<String>();
 			workbook = Workbook.getWorkbook(actionLibraryFile);
 			Sheet sheet = workbook.getSheet(0);
@@ -732,6 +914,7 @@ public class EditPage {
 				Cell cell = sheet.getCell(j, row);
 				if (cell.getContents() != null && cell.getContents().length() != 0)
 					temp.add(cell.getContents());
+				deletedvalue1.add(cell.getContents());
 			}
 
 			parameterFile = utilities.getExcelFile("parameterFile");
@@ -758,6 +941,7 @@ public class EditPage {
 
 			for (int r = 0; r < parametersArray.length; r++) {
 				dataValues[r][0] = parametersArray[r];
+				//idvalue.equalsIgnoreCase(arg0)
 			}
 
 			for (int r = 0; r < parametersValues.length; r++) {
@@ -770,6 +954,10 @@ public class EditPage {
 		}
 
 	}
+	
+	
+	
+	
 
 	
 	
