@@ -161,7 +161,7 @@ public class ActioTestGenerator extends JFrame {
 		lblTestCaseName = new JLabel("Enter Test Case Name :");
 		lblTestData = new JLabel("Enter Test Data :");
 		lblPlatform = new JLabel("Enter Platform :");
-		lblSave = new JLabel("Saved The TestCase Successfully :");
+		lblSave = new JLabel("Saved The TestCase Successfully.");
 		lblSave.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblSave.setForeground(Color.blue);
 

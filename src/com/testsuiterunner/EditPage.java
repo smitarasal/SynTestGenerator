@@ -168,7 +168,7 @@ public class EditPage {
 		panelEdit.setVisible(false);
 
 		
-		lblUpdate = new JLabel("Updated The TestCase Successfully :");
+		lblUpdate = new JLabel("Updated The TestCase Successfully.");
 		lblUpdate.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblUpdate.setForeground(Color.blue);
 		lblUpdate.setVisible(false);
@@ -272,7 +272,7 @@ public class EditPage {
 				lblUpdate.setVisible(false);
 				panelEdit.setVisible(false);
 				panelMenu.setVisible(true);
-				comboActions.setSelectedIndex(0);
+				//comboActions.setSelectedIndex(0);
 				comboboxmodule.setSelectedIndex(0);
 				
 				
@@ -299,7 +299,18 @@ public class EditPage {
 		panelEdit.add(btnBackToMain);
 		
 		
+	ActioTestGenerator.btnEditTests.addActionListener(new ActionListener() {
 		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			EditPage.EditButton(actioTestGenerator, panelMenu, panelEdit);
+			//EditDetails.EditButtonCode(self, panelMenu, panelEdit);
+			panelMenu.setVisible(false);
+			panelEdit.setVisible(true);
+			
+		}
+	});
 		
 				
 		
@@ -481,7 +492,7 @@ public class EditPage {
 				Table.setAutoCreateRowSorter(true);
 				model112 = new DefaultTableModel(mastersheetData, headers){
 					public boolean isCellEditable(int row, int col) {
-						if (col == 4 || col == 7 ||col==8) {
+						if (col == 4 || col == 7 ||col==8 ||row>0) {
 						           
 						            return false;
 						        } else {
@@ -736,7 +747,7 @@ public class EditPage {
 							HashSet<String> uniqueValues2 = new HashSet<>(deletedvalue1);
 							Iterator<String> it1 = uniqueValues2.iterator();
 						     while(it1.hasNext()){
-						    	 System.out.println("ak delete valuese   "+it1.next() );
+						    	// System.out.println("ak delete valuese   "+it1.next() );
 						     }
 							
 							
@@ -749,15 +760,15 @@ public class EditPage {
 						     
 							for (int b = 0; b < sheet3.getRows(); b++) {
 								//size = sheet3.getRows();
-								//Cell cell = sheet3.getCell(0, b);
+								
 								Cell cell = sheet3.getCell(0,b);
 							
 							
-								System.out.println("ak col 1   "+cell.getContents() );
+								//System.out.println("ak col 1   "+cell.getContents() );
 								
-							//	Cell cellc1 = sheet3.getCell(1, b);
+							
 								Cell cellc1 = sheet3.getCell(1,b);
-								System.out.println("ak col 2   "+cellc1.getContents() );
+								//System.out.println("ak col 2   "+cellc1.getContents() );
 								if(idvalue.equalsIgnoreCase(cell.getContents())&& cellc1.getContents().equalsIgnoreCase(buff))
 								{
 									sheet3.removeRow(b);
@@ -888,9 +899,9 @@ public class EditPage {
 	
 	}
 	static void changeColumnsWidth(TableColumnModel colModel) {
-		colModel.getColumn(0).setPreferredWidth(45);
-		colModel.getColumn(2).setPreferredWidth(35);
-		colModel.getColumn(3).setPreferredWidth(10);
+		colModel.getColumn(0).setPreferredWidth(55);
+		colModel.getColumn(2).setPreferredWidth(55);
+		colModel.getColumn(3).setPreferredWidth(55);
 		colModel.getColumn(5).setPreferredWidth(125);
 		colModel.getColumn(6).setPreferredWidth(125);
 		colModel.getColumn(7).setPreferredWidth(235);
