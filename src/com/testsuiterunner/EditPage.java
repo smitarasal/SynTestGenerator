@@ -492,7 +492,7 @@ public class EditPage {
 				Table.setAutoCreateRowSorter(true);
 				model112 = new DefaultTableModel(mastersheetData, headers){
 					public boolean isCellEditable(int row, int col) {
-						if (col == 4 || col == 7 ||col==8 ||row>0) {
+						if (col == 4 || col == 7 ||col==8 ||row>0 ) {
 						           
 						            return false;
 						        } else {
@@ -654,7 +654,10 @@ public class EditPage {
 				DefaultTableModel deletemodel = new DefaultTableModel();
 				
 				deletemodel = (DefaultTableModel) Table.getModel();
+		
+					
 				deletemodel.removeRow(Table.getSelectedRow());
+			
 			
 			}
 		});
@@ -714,30 +717,18 @@ public class EditPage {
 				
 				
 				
-				
-				
+			
+		
 				//ffor removing parameters
 				// for removing the row from testeb.xls     .
 							Workbook workbook1 = null;
 							
 								try {
 									workbook1 = Workbook.getWorkbook(parameterFile);
-								} catch (BiffException e3) {
-									// TODO Auto-generated catch block
-									e3.printStackTrace();
-								} catch (IOException e3) {
-									// TODO Auto-generated catch block
-									e3.printStackTrace();
-								}
+								
 							
-							WritableWorkbook copy1 = null;
-							try {
-								copy1 = Workbook.createWorkbook(parameterFile, workbook1);
-							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						
+							WritableWorkbook copy1 = Workbook.createWorkbook(parameterFile, workbook1);
+							
 							
 							WritableSheet sheet3 = copy1.getSheet(0);
 						
@@ -747,7 +738,7 @@ public class EditPage {
 							HashSet<String> uniqueValues2 = new HashSet<>(deletedvalue1);
 							Iterator<String> it1 = uniqueValues2.iterator();
 						     while(it1.hasNext()){
-						    	// System.out.println("ak delete valuese   "+it1.next() );
+						    	 System.out.println("ak delete valuese   "+it1.next() );
 						     }
 							
 							
@@ -755,7 +746,7 @@ public class EditPage {
 							Iterator<String> it = uniqueValues1.iterator();
 						     while(it.hasNext()){
 						    	 String buff=it.next();
-						    	// System.out.println("ak delete valuese   "+it.next() );
+						    //	 System.out.println("ak delete valuese   "+it.next() );
 						       
 						     
 							for (int b = 0; b < sheet3.getRows(); b++) {
@@ -764,7 +755,7 @@ public class EditPage {
 								Cell cell = sheet3.getCell(0,b);
 							
 							
-								//System.out.println("ak col 1   "+cell.getContents() );
+								System.out.println("ak col 1   "+cell.getContents() );
 								
 							
 								Cell cellc1 = sheet3.getCell(1,b);
@@ -780,26 +771,17 @@ public class EditPage {
 							
 							
 							
-							try {
+							
 								copy1.write();
+								
 						
-							
-							
-							} catch (IOException e2) {
-								// TODO Auto-generated catch block
-								e2.printStackTrace();
-							}
 							workbook1.close();
-							try {
+							
 								copy1.close();
-							} catch (WriteException e1) {
+							} catch (WriteException | BiffException | IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
-							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}//end of code for removing the row
-					
+							} 
 				
 				
 				

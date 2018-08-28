@@ -552,7 +552,11 @@ public class ActioTestGenerator extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = new DefaultTableModel();
 				model = (DefaultTableModel) masterTable.getModel();
+				if (masterTable.getSelectedRow()>0){
 				model.removeRow(masterTable.getSelectedRow());
+				}else{
+					
+				}
 			}
 		});
 
@@ -740,6 +744,7 @@ public class ActioTestGenerator extends JFrame {
 						comboPriority.setEnabled(false);
 						comboPlatform.setEnabled(false);
 						comboTestSuite.setEnabled(false);
+					
 						boolean b = false;
 						textModule.setEditable(b);
 						textTestCaseID.setEditable(b);
