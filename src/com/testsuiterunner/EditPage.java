@@ -8,6 +8,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,9 +36,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import jxl.Cell;
 import jxl.Sheet;
@@ -176,13 +180,13 @@ public class EditPage {
 		lblUpdate.setBounds(50, 50, 286, 87);
 		
 		JLabel lblModuleLabel = new JLabel("Select Module :");
-		lblModuleLabel.setBounds(50, 20, 225, 33);
+		lblModuleLabel.setBounds(28, 30,120, 14);
 	
 		panelEdit.add(lblModuleLabel);
 		final JComboBox<Object> comboboxmodule = new JComboBox<Object>();
 		final JComboBox<Object> comboTestID = new JComboBox<Object>();
 		comboboxmodule.addItem("");
-		comboboxmodule.setBounds(135, 20, 225, 33);
+		comboboxmodule.setBounds(150, 30, 120, 23);
 		panelEdit.add(comboboxmodule);
 		
 		
@@ -253,8 +257,8 @@ public class EditPage {
 				e2.printStackTrace();
 			}
 
-			JLabel lblTestId = new JLabel("Select TestCase ID");
-			lblTestId.setBounds(380, 20, 210, 33);
+			JLabel lblTestId = new JLabel("Select ID");
+			lblTestId.setBounds(300, 30,120, 14);
 			panelEdit.add(lblTestId);
 			ActioTestGenerator.populateTCid(comboTestID, testCaseFile,selectedItem ,4, panelEdit);
 			
@@ -272,9 +276,8 @@ public class EditPage {
 				lblUpdate.setVisible(false);
 				panelEdit.setVisible(false);
 				panelMenu.setVisible(true);
-				//comboActions.setSelectedIndex(0);
+				comboActions.setSelectedIndex(0);
 				comboboxmodule.setSelectedIndex(0);
-				
 				
 				
 				DefaultTableModel model = (DefaultTableModel) parameterTable.getModel();
@@ -295,7 +298,7 @@ public class EditPage {
 				
 			}
 		});
-		btnBackToMain.setBounds(101, 600, 170, 33);
+		btnBackToMain.setBounds(164, 513, 175, 23);
 		panelEdit.add(btnBackToMain);
 		
 		
@@ -315,13 +318,13 @@ public class EditPage {
 				
 		
 		JLabel lblActions = new JLabel("Select Actions :");
-		lblActions.setBounds(1100, 20, 190, 33);
+		lblActions.setBounds(694, 30, 125, 14);
 		panelEdit.add(lblActions);
 		//final JComboBox<Object> comboActions = new JComboBox<Object>();
 		comboActions = new JComboBox();
 		comboActions.addItem("");
 		//comboActions.addItem("");
-		comboActions.setBounds(1250, 20, 200, 33);
+		comboActions.setBounds(850, 26, 139, 23);
 		panelEdit.add(comboActions);
 	
 		columnNames = new String[] { "Parameter", "	Parameter value" };
@@ -358,13 +361,16 @@ public class EditPage {
 
 		scrollPaneParameters = new JScrollPane(parameterTable);
 		panelEdit.add(scrollPaneParameters, BorderLayout.CENTER);
-		scrollPaneParameters.setBounds(1100, 208, 349, 315);
+		scrollPaneParameters.setBounds(799, 135, 243, 319);
 		
+
 		
-	
 		comboActions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
+				btnAddStep.setEnabled(true);
+				btnDeleteStep.setEnabled(true);
+			
 				populateTable(comboActions.getSelectedIndex());
 				paramodel = new DefaultTableModel(data, columnNames) {
 					@Override
@@ -389,7 +395,7 @@ public class EditPage {
 		panelEdit.add(scrollPaneMaster, BorderLayout.CENTER);
 		
 		//scrollPaneMaster.setBounds(30, 100, 1000, 500);
-		scrollPaneMaster.setBounds(30, 208, 1020, 315);
+		scrollPaneMaster.setBounds(10, 141, 751, 319);
 		scrollPaneMaster.setVisible(false);
 		
 		
@@ -399,7 +405,7 @@ public class EditPage {
 			
 		
 		JButton btnSearchSelected = new JButton("Search Selected");
-		btnSearchSelected.setBounds(800, 20, 170, 33);
+		btnSearchSelected.setBounds(564, 26, 109, 23);
 		panelEdit.add(btnSearchSelected);		
 	      
 		
@@ -504,7 +510,12 @@ public class EditPage {
 				
 			
 				};
+				
+				
+				
 				Table.setModel(model112);
+				
+				//Table.getTableHeader().setEnabled(false);
 				
 				TableColumnModel colModel = Table.getColumnModel();
 				changeColumnsWidth(colModel);
@@ -518,21 +529,36 @@ public class EditPage {
 		});//End of Search.
 		
 		
-		
-		
-		
-	
 
-	
+		 int delay = 20000; //milliseconds
+		   ActionListener taskPerformer = new ActionListener() {
+		       public void actionPerformed(ActionEvent evt) {
+		    	   lblUpdate.setVisible(false);
+		       }
+		   };
+		   new Timer(delay, taskPerformer).start();
 		
 		
 		
 		JButton btnUpdate = new JButton("Update Test Case");
+		btnUpdate.setEnabled(false);
 		
 		btnUpdate.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				mainFrame = new JFrame();
+				 int result = JOptionPane.showConfirmDialog( null, "Save the test case successfully?",
+					        "alert", JOptionPane.OK_CANCEL_OPTION);
+				 
+				if(result==JOptionPane.OK_OPTION){
+					
+				
+				boolean flag = false;
+				String combomoduletext =(String) comboboxmodule.getSelectedItem();
+				if (combomoduletext == "") {
+					JOptionPane.showMessageDialog(mainFrame.getComponent(0), "Please Select Any Test Case To Update!!!");
+				} else {
 				// TODO Auto-generated method stub
 			try {	Utilities utilities = new Utilities();
 				testCaseFile = utilities.getExcelFile("testfile");
@@ -637,50 +663,83 @@ public class EditPage {
 						
 			}
 			
-			
+			}
+			}
 			
 		});
 		
-		btnUpdate.setBounds(400, 600, 170, 33);
+		btnUpdate.setBounds(522, 513, 174, 23);
 		panelEdit.add(btnUpdate);
 		
 		
+		Table.addMouseListener(new MouseAdapter() {
+			  public void mouseClicked(MouseEvent e) {
+			    if (e.getClickCount() == 2) {
+			     
+			      btnUpdate.setEnabled(true);
+			     // do some stuff
+			    }
+			  }
+			});
+		
 		//delete step will delete a particular row that is selected from the jtable.
-		JButton btnDeleteStep= new JButton("Delete Step");
+		btnDeleteStep= new JButton("Delete Step");
+		
 		panelEdit.add(btnDeleteStep);
-		btnDeleteStep.setBounds(1300, 600, 170, 33);
+		btnDeleteStep.setBounds(951, 513, 109, 23);
+		btnDeleteStep.setEnabled(false);
+		
 		btnDeleteStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				mainFrame = new JFrame();
 				DefaultTableModel deletemodel = new DefaultTableModel();
 				
+				
 				deletemodel = (DefaultTableModel) Table.getModel();
-		
+				
+				
+				 if (Table.getSelectedRow()>0){
+				
 					
-				deletemodel.removeRow(Table.getSelectedRow());
-			
-			
+					int selectedOption = JOptionPane.showConfirmDialog(null, 
+	                        "Do you want to delete the selected Action Step", 
+	                        "Choose", 
+	                        JOptionPane.YES_NO_OPTION); 
+	if (selectedOption == JOptionPane.YES_OPTION) {
+		
+		deletemodel.removeRow(Table.getSelectedRow());
+	}
+				
+				}else{
+					JOptionPane.showMessageDialog(mainFrame.getComponent(0), "This Action step  cannot be deleted.");
+				}
 			}
+			
+			
+			
 		});
 		
 		
 		
 		textDescription = new JTextField();
 		panelEdit.add(textDescription);
-		textDescription.setBounds(1250, 100, 260, 33);
+		textDescription.setBounds(862, 84, 180, 31);
 		
 		
 		lblTestDescription = new JLabel("Enter TestDescription:");
 		panelEdit.add(lblTestDescription);
-		lblTestDescription.setBounds(1100, 100, 190, 33);
+		lblTestDescription.setBounds(696, 98, 144, 14);
 	
 		//add step button is used add the action and description from the actions combobox and textdecription fields respectivley
 		btnAddStep = new JButton("Add Step");
 		panelEdit.add(btnAddStep);
-		btnAddStep.setBounds(1100, 600, 170, 33);
+		btnAddStep.setBounds(805, 513, 107, 23);
+		btnAddStep.setEnabled(false);
 		Object[] row = new Object[10];
 			
 		btnAddStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				btnUpdate.setEnabled(true);
 		
 				 if (Table.getRowCount() > 0) {
 					row[0] = "";
@@ -705,23 +764,23 @@ public class EditPage {
 					for (int j = 0; j < nCol; j += 2) {
 
 						mapValues.put(paramodel.getValueAt(i, j).toString(), paramodel.getValueAt(i, j + 1).toString());
-						System.out.println("mapvalues " +mapValues);
+						//System.out.println("mapvalues " +mapValues);
 
 					}
 
 				}
 				
 				textDescription.setText("");
-				
+			
 				
 				
 				
 				
 			
 		
+		
 				//ffor removing parameters
-				// for removing the row from testeb.xls     .
-							Workbook workbook1 = null;
+				    			Workbook workbook1 = null;
 							
 								try {
 									workbook1 = Workbook.getWorkbook(parameterFile);
@@ -735,12 +794,12 @@ public class EditPage {
 							
 							
 							//
-							HashSet<String> uniqueValues2 = new HashSet<>(deletedvalue1);
+						/*	HashSet<String> uniqueValues2 = new HashSet<>(deletedvalue1);
 							Iterator<String> it1 = uniqueValues2.iterator();
 						     while(it1.hasNext()){
-						    	 System.out.println("ak delete valuese   "+it1.next() );
+						    	// System.out.println("ak delete valuese   "+it1.next() );
 						     }
-							
+							*/
 							
 							HashSet<String> uniqueValues1 = new HashSet<>(deletedvalue1);
 							Iterator<String> it = uniqueValues1.iterator();
@@ -755,7 +814,7 @@ public class EditPage {
 								Cell cell = sheet3.getCell(0,b);
 							
 							
-								System.out.println("ak col 1   "+cell.getContents() );
+								//System.out.println("ak col 1   "+cell.getContents() );
 								
 							
 								Cell cellc1 = sheet3.getCell(1,b);
@@ -774,10 +833,10 @@ public class EditPage {
 							
 								copy1.write();
 								
-						
+								copy1.close();
 							workbook1.close();
 							
-								copy1.close();
+								
 							} catch (WriteException | BiffException | IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -788,11 +847,8 @@ public class EditPage {
 				
 				// end of paramerter delete values
 				
-				
-				
-				
-				
-				
+			
+
 				
 				try {
 					parameterFile = utilities.getExcelFile("parameterFile");
@@ -876,14 +932,18 @@ public class EditPage {
 		});	//End of add step
 	
 	
+		
+		
+		
+		
 	
 	
 	
 	}
 	static void changeColumnsWidth(TableColumnModel colModel) {
-		colModel.getColumn(0).setPreferredWidth(55);
-		colModel.getColumn(2).setPreferredWidth(55);
-		colModel.getColumn(3).setPreferredWidth(55);
+		colModel.getColumn(0).setPreferredWidth(80);
+		colModel.getColumn(2).setPreferredWidth(80);
+		colModel.getColumn(3).setPreferredWidth(80);
 		colModel.getColumn(5).setPreferredWidth(125);
 		colModel.getColumn(6).setPreferredWidth(125);
 		colModel.getColumn(7).setPreferredWidth(235);
