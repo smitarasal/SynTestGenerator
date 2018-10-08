@@ -694,7 +694,7 @@ public class EditPage {
 				mainFrame = new JFrame();
 				DefaultTableModel deletemodel = new DefaultTableModel();
 				
-				
+				 int[] rows = Table.getSelectedRows();
 				deletemodel = (DefaultTableModel) Table.getModel();
 				
 				
@@ -706,8 +706,10 @@ public class EditPage {
 	                        "Choose", 
 	                        JOptionPane.YES_NO_OPTION); 
 	if (selectedOption == JOptionPane.YES_OPTION) {
-		
-		deletemodel.removeRow(Table.getSelectedRow());
+		 for(int i=0;i<rows.length;i++){
+			 deletemodel.removeRow(rows[i]-i);
+		   }
+		//deletemodel.removeRow(Table.getSelectedRow());
 	}
 				
 				}else{
@@ -718,6 +720,10 @@ public class EditPage {
 			
 			
 		});
+		
+		
+		
+		
 		
 		
 		

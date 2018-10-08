@@ -593,7 +593,7 @@ public class ActioTestGenerator extends JFrame {
 			
 	
 				
-				
+				 int[] rows = masterTable.getSelectedRows();
 				DefaultTableModel model = new DefaultTableModel();
 				model = (DefaultTableModel) masterTable.getModel();
 				if(masterTable.hasFocus()==false){
@@ -606,8 +606,10 @@ public class ActioTestGenerator extends JFrame {
 	                        "Choose", 
 	                        JOptionPane.YES_NO_OPTION); 
 	if (selectedOption == JOptionPane.YES_OPTION) {
-		
-		model.removeRow(masterTable.getSelectedRow());
+		 for(int i=0;i<rows.length;i++){
+			 model.removeRow(rows[i]-i);
+		   }
+		//model.removeRow(masterTable.getSelectedRow());
 	}
 				
 				}else{
